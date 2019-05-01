@@ -4,7 +4,12 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.GridView;
+
+import java.util.ArrayList;
 
 public class Gameplay extends AppCompatActivity {
 
@@ -30,6 +35,9 @@ public class Gameplay extends AppCompatActivity {
     MediaPlayer music;
     MediaPlayer cardUpSound;
     MediaPlayer cardDownSound;
+
+    //GridLayout variables
+    GridView gridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +70,28 @@ public class Gameplay extends AppCompatActivity {
         else
             numOfCards = 12;
 
+        //add the cardviews here, Kai.
         setup();
+        ArrayList<Card> cards = new ArrayList<>();
+        cards.add(new Card(R.drawable.bear_card, R.drawable.cardback));
+        cards.add(new Card(R.drawable.bird_card, R.drawable.cardback));
+        cards.add(new Card(R.drawable.cat_card, R.drawable.cardback));
+        cards.add(new Card(R.drawable.cheetah_card, R.drawable.cardback));
+        cards.add(new Card(R.drawable.elephant_card, R.drawable.cardback));
+        cards.add(new Card(R.drawable.owl_card, R.drawable.cardback));
+        cards.add(new Card(R.drawable.panda_card, R.drawable.cardback));
+        cards.add(new Card(R.drawable.parrot_card, R.drawable.cardback));
+        cards.add(new Card(R.drawable.pig_card, R.drawable.cardback));
+        cards.add(new Card(R.drawable.rhino_card, R.drawable.cardback));
+        cards.add(new Card(R.drawable.toucan_card, R.drawable.cardback));
 
+
+
+
+        gridView = findViewById(R.id.gridView);
+
+        CardLayoutAdapter cardAdapter = new CardLayoutAdapter(this, cards);
+        gridView.setAdapter(cardAdapter);
     }
 
     public void setup(){

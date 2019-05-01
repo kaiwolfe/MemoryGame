@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     //Ex: Menu > Options: Sound Off > Menu > Button=Sound Plays
     //Only happens the first time after changing the setting?
 
+
     //Variables used to know whether user turned sound on/off
     boolean musicOn = true;
     boolean sfxOn = true;
