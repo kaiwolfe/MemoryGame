@@ -1,18 +1,19 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="wrap_content"
+<com.wajahatkarim3.easyflipview.EasyFlipView android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
-    >
+    app:flipOnTouch="true"
+    app:flipEnabled="true"
+    app:flipDuration="400"
+    app:flipType="horizontal"
+    app:flipFrom="front"
+    app:autoFlipBack="true"
+    app:autoFlipBackTime="1000"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <!-- Back Layout Goes Here -->
+    <include layout="@layout/card_back"/>
 
-        <ImageView
-            android:id="@+id/cardImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-    </FrameLayout>
-</LinearLayout>
+    <!-- Front Layout Goes Here -->
+    <include layout="@layout/card_front"/>
+
+</com.wajahatkarim3.easyflipview.EasyFlipView>

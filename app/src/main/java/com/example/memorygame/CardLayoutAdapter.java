@@ -50,13 +50,20 @@ public class CardLayoutAdapter extends BaseAdapter {
             final LayoutInflater layoutInflater = LayoutInflater.from(mContext);
             convertView = layoutInflater.inflate(R.layout.card_layout, null);
         }
-        final ImageView imageView = (ImageView)convertView.findViewById(R.id.cardImage);
-        imageView.setImageResource(card.getBackImage());
-        BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+        final ImageView imageViewBack = (ImageView)convertView.findViewById(R.id.cardImageBack);
+        imageViewBack.setImageResource(card.getBackImage());
+        BitmapDrawable drawable = (BitmapDrawable) imageViewBack.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(),bitmap.getHeight(), true);
-        imageView.setImageBitmap(scaledBitmap);
-        imageView.setAdjustViewBounds(true);
+        imageViewBack.setImageBitmap(scaledBitmap);
+        imageViewBack.setAdjustViewBounds(true);
+        final ImageView imageViewFront = (ImageView)convertView.findViewById(R.id.cardImageFront);
+        imageViewFront.setImageResource(card.getFrontImage());
+        BitmapDrawable drawable2 = (BitmapDrawable) imageViewFront.getDrawable();
+        Bitmap bitmap2 = drawable2.getBitmap();
+        Bitmap scaledBitmap2 = Bitmap.createScaledBitmap(bitmap2, bitmap2.getWidth(),bitmap2.getHeight(), true);
+        imageViewFront.setImageBitmap(scaledBitmap2);
+        imageViewFront.setAdjustViewBounds(true);
 
         return convertView;
     }

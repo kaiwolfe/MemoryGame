@@ -1,0 +1,11 @@
+<android.widget.FrameLayout android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content">
+
+    <ImageView android:id="@+id/cardImageFront"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/bear_card"
+    tools:ignore="MissingConstraints"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" />
+</android.widget.FrameLayout>

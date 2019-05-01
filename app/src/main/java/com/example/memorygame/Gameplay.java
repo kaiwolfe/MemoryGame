@@ -73,17 +73,21 @@ public class Gameplay extends AppCompatActivity {
         //add the cardviews here, Kai.
         setup();
         ArrayList<Card> cards = new ArrayList<>();
-        cards.add(new Card(R.drawable.bear_card, R.drawable.cardback));
-        cards.add(new Card(R.drawable.bird_card, R.drawable.cardback));
-        cards.add(new Card(R.drawable.cat_card, R.drawable.cardback));
-        cards.add(new Card(R.drawable.cheetah_card, R.drawable.cardback));
-        cards.add(new Card(R.drawable.elephant_card, R.drawable.cardback));
-        cards.add(new Card(R.drawable.owl_card, R.drawable.cardback));
-        cards.add(new Card(R.drawable.panda_card, R.drawable.cardback));
-        cards.add(new Card(R.drawable.parrot_card, R.drawable.cardback));
-        cards.add(new Card(R.drawable.pig_card, R.drawable.cardback));
-        cards.add(new Card(R.drawable.rhino_card, R.drawable.cardback));
-        cards.add(new Card(R.drawable.toucan_card, R.drawable.cardback));
+        cards.add(new Card(R.drawable.calicocat1, R.drawable.cardback_stripes));
+        cards.add(new Card(R.drawable.calicocat2, R.drawable.cardback_bluestripes));
+        cards.add(new Card(R.drawable.tabbycat1, R.drawable.cardback_brick));
+        cards.add(new Card(R.drawable.tabbycat2, R.drawable.cardback_deer));
+        cards.add(new Card(R.drawable.blackcat1, R.drawable.cardback_fingerprint));
+        cards.add(new Card(R.drawable.blackcat2, R.drawable.cardback_flower));
+        cards.add(new Card(R.drawable.graycat1, R.drawable.cardback_green));
+        cards.add(new Card(R.drawable.graycat2, R.drawable.cardback_koi));
+        cards.add(new Card(R.drawable.tortiecat1, R.drawable.cardback_orange));
+        cards.add(new Card(R.drawable.tortiecat2, R.drawable.cardback_pink));
+        cards.add(new Card(R.drawable.whitecat1, R.drawable.cardback_purple));
+        cards.add(new Card(R.drawable.whitecat2, R.drawable.cardback_sakura));
+        cards.add(new Card(R.drawable.whitecat1, R.drawable.cardback_tile));
+        cards.add(new Card(R.drawable.whitecat2, R.drawable.cardback_classic));
+
 
 
 
