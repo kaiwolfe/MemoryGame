@@ -17,4 +17,10 @@ public class Card {
     public int getFrontImage() {
         return frontImage;
     }
+
+    @Override
+    public String toString() {
+        String frontImageID = "" + frontImage;
+        return frontImageID;
+    }
 }

@@ -1,13 +1,22 @@
 package com.example.memorygame;
 
+import android.app.Application;
 import android.content.Intent;
+import android.media.Image;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.wajahatkarim3.easyflipview.EasyFlipView;
 
 import java.util.ArrayList;
 
@@ -38,6 +47,13 @@ public class Gameplay extends AppCompatActivity {
 
     //GridLayout variables
     GridView gridView;
+    static int choices = 0;
+    static int image1;
+    static int image2;
+    static EasyFlipView flip1;
+    static EasyFlipView flip2;
+    Card choice = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,33 +86,10 @@ public class Gameplay extends AppCompatActivity {
         else
             numOfCards = 12;
 
-        //add the cardviews here, Kai.
         setup();
-        ArrayList<Card> cards = new ArrayList<>();
-        cards.add(new Card(R.drawable.calicocat1, R.drawable.cardback_stripes));
-        cards.add(new Card(R.drawable.calicocat2, R.drawable.cardback_bluestripes));
-        cards.add(new Card(R.drawable.tabbycat1, R.drawable.cardback_brick));
-        cards.add(new Card(R.drawable.tabbycat2, R.drawable.cardback_deer));
-        cards.add(new Card(R.drawable.blackcat1, R.drawable.cardback_fingerprint));
-        cards.add(new Card(R.drawable.blackcat2, R.drawable.cardback_flower));
-        cards.add(new Card(R.drawable.graycat1, R.drawable.cardback_green));
-        cards.add(new Card(R.drawable.graycat2, R.drawable.cardback_koi));
-        cards.add(new Card(R.drawable.tortiecat1, R.drawable.cardback_orange));
-        cards.add(new Card(R.drawable.tortiecat2, R.drawable.cardback_pink));
-        cards.add(new Card(R.drawable.whitecat1, R.drawable.cardback_purple));
-        cards.add(new Card(R.drawable.whitecat2, R.drawable.cardback_sakura));
-        cards.add(new Card(R.drawable.whitecat1, R.drawable.cardback_tile));
-        cards.add(new Card(R.drawable.whitecat2, R.drawable.cardback_classic));
-
-
-
-
-
-        gridView = findViewById(R.id.gridView);
-
-        CardLayoutAdapter cardAdapter = new CardLayoutAdapter(this, cards);
-        gridView.setAdapter(cardAdapter);
     }
+
+
 
     public void setup(){
         setScoreValues();
@@ -139,12 +132,28 @@ public class Gameplay extends AppCompatActivity {
         //Use RNG for math
         if(category.equals("animals")){
             if(difficulty.equals("easy")){
+                Category categories = new Category(R.drawable.texture_fingerprint);
+                final ArrayList<Card> cards = categories.getAnimalCards(3, "Easy");
+                gridView = findViewById(R.id.gridView);
+                gridView.setColumnWidth(300);
+                final CardLayoutAdapter cardAdapter = new CardLayoutAdapter(this, cards);
+                gridView.setAdapter(cardAdapter);
             }
 
             else if(difficulty.equals("normal")){
+                Category categories = new Category(R.drawable.texture_fingerprint);
+                final ArrayList<Card> cards = categories.getAnimalCards(4, "Medium");
+                gridView = findViewById(R.id.gridView);
+                final CardLayoutAdapter cardAdapter = new CardLayoutAdapter(this, cards);
+                gridView.setAdapter(cardAdapter);
             }
 
             else if(difficulty.equals("hard")){
+                Category categories = new Category(R.drawable.texture_fingerprint);
+                final ArrayList<Card> cards = categories.getAnimalCards(3, "Hard");
+                gridView = findViewById(R.id.gridView);
+                final CardLayoutAdapter cardAdapter = new CardLayoutAdapter(this, cards);
+                gridView.setAdapter(cardAdapter);
             }
         }
 

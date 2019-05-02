@@ -12,9 +12,9 @@ import android.widget.Toast;
 public class NormalCategory extends AppCompatActivity {
 
     //Variables for game settings
-    String gameMode = "";
-    String category = "";
-    String difficulty = "";
+    String gameMode = "normal";
+    String category = "animals";
+    String difficulty = "normal";
 
     //Variables for sound settings
     boolean musicOn;
