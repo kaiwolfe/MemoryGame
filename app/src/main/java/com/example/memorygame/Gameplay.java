@@ -1,26 +1,22 @@
 package com.example.memorygame;
 
-import android.app.Application;
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.media.Image;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.wajahatkarim3.easyflipview.EasyFlipView;
 
 import java.util.ArrayList;
 
 public class Gameplay extends AppCompatActivity {
+
+    private CountDownTimer countDownTimer;
+    private long timeLeftInMilliseconds = 30000;
+    TextView countDownText;
 
     //Variables for game settings
     String gameMode;
@@ -46,12 +42,10 @@ public class Gameplay extends AppCompatActivity {
     MediaPlayer cardDownSound;
 
     //GridLayout variables
-    GridView gridView;
+    static GridView gridView;
     static int choices = 0;
     static int image1;
     static int image2;
-    static EasyFlipView flip1;
-    static EasyFlipView flip2;
     Card choice = null;
 
 
@@ -86,9 +80,41 @@ public class Gameplay extends AppCompatActivity {
         else
             numOfCards = 12;
 
+
+
+        //COUNTDOWN TIMER SECTION
+        countDownText = (TextView) findViewById(R.id.timer);
         setup();
     }
 
+    public void startTimer() {
+        countDownTimer = new CountDownTimer(timeLeftInMilliseconds, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                timeLeftInMilliseconds = millisUntilFinished;
+                updateTimer();
+            }
+
+            @Override
+            public void onFinish() {
+                countDownText.setText("TIME'S UP!");
+            }
+        }.start();
+    }
+
+    public void updateTimer() {
+        int minutes = (int) timeLeftInMilliseconds / 60000;
+        int seconds = (int) timeLeftInMilliseconds % 60000 / 1000;
+
+        String timeLeftText = "";
+        if (minutes < 10) timeLeftText = "0";
+        timeLeftText += "" + minutes;
+        timeLeftText += " : " ;
+        if (seconds < 10) timeLeftText += "0";
+        timeLeftText += seconds;
+
+        countDownText.setText(timeLeftText);
+    }
 
 
     public void setup(){
@@ -97,6 +123,7 @@ public class Gameplay extends AppCompatActivity {
         setCardFaces();
         populateCards();
         createCards();
+        startTimer();
     }
 
     //Set values used to calculate score
@@ -124,6 +151,16 @@ public class Gameplay extends AppCompatActivity {
         //Set backs of cards based on texture setting
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    public static void disableGridView() {
+        for (int i = 0; i < gridView.getChildCount(); i++){
+        }
+    }
+    public static void enableGridView() {
+        for (int i = 0; i < gridView.getChildCount(); i++){
+        }
+    }
+
     //Set card attributes
     public void setCardFaces(){
 
@@ -132,7 +169,7 @@ public class Gameplay extends AppCompatActivity {
         //Use RNG for math
         if(category.equals("animals")){
             if(difficulty.equals("easy")){
-                Category categories = new Category(R.drawable.texture_fingerprint);
+                Category categories = new Category(R.drawable.texture_fingerprint, R.drawable.card_blank);
                 final ArrayList<Card> cards = categories.getAnimalCards(3, "Easy");
                 gridView = findViewById(R.id.gridView);
                 gridView.setColumnWidth(300);
@@ -141,16 +178,16 @@ public class Gameplay extends AppCompatActivity {
             }
 
             else if(difficulty.equals("normal")){
-                Category categories = new Category(R.drawable.texture_fingerprint);
-                final ArrayList<Card> cards = categories.getAnimalCards(4, "Medium");
+                Category categories = new Category(R.drawable.texture_fingerprint, R.drawable.card_blank);
+                final ArrayList<Card> cards = categories.getAnimalCards(6, "Medium");
                 gridView = findViewById(R.id.gridView);
                 final CardLayoutAdapter cardAdapter = new CardLayoutAdapter(this, cards);
                 gridView.setAdapter(cardAdapter);
             }
 
             else if(difficulty.equals("hard")){
-                Category categories = new Category(R.drawable.texture_fingerprint);
-                final ArrayList<Card> cards = categories.getAnimalCards(3, "Hard");
+                Category categories = new Category(R.drawable.texture_fingerprint, R.drawable.card_blank);
+                final ArrayList<Card> cards = categories.getAnimalCards(8, "Hard");
                 gridView = findViewById(R.id.gridView);
                 final CardLayoutAdapter cardAdapter = new CardLayoutAdapter(this, cards);
                 gridView.setAdapter(cardAdapter);

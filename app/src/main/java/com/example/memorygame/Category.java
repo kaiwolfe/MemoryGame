@@ -12,15 +12,18 @@ import java.util.Random;
 
 class Category {
     static int cardBack;
+    static int cardBlank;
 
+    private ArrayList<Card> cardTextures;
 
     private ArrayList<ArrayList<Card>> animalCardSet;
     private ArrayList<ArrayList<Card>> foodCardSet;
     private ArrayList<ArrayList<Card>> natureCardSet;
 
 
-    public Category(int cardBack){
+    public Category(int cardBack, int cardBlank){
         Category.cardBack = cardBack;
+        Category.cardBlank = cardBlank;
     }
 
     public ArrayList<Card> getAnimalCards(int numSets, String difficulty){
@@ -130,6 +133,26 @@ class Category {
         } while(indexAdded.size() != numSets * 2);
 
         return mixedSubset;
+    }
+
+    public ArrayList<Card> getCardTextures(){
+        cardTextures = new ArrayList<>();
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_blue));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_brick));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_classic));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_deer));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_fingerprint));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_flower));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_green));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_koi));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_orange));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_pink));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_purple));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_sakura));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_stripes));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_tile));
+
+        return cardTextures;
     }
 
     private void populateAnimalCards(){

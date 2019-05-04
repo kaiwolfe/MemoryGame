@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
+
+import java.util.ArrayList;
 
 public class Options extends AppCompatActivity {
 
@@ -30,6 +33,9 @@ public class Options extends AppCompatActivity {
     MediaPlayer buttonSound;
     MediaPlayer switchSound;
 
+    //Variables for GridView of Textures
+    GridView gridView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +57,13 @@ public class Options extends AppCompatActivity {
         //Set sound/music based on value
         setSound(sfxOn);
         setMusic(musicOn);
+
+        gridView = (GridView) findViewById(R.id.gridView_cardTextures);
+        Category categories = new Category(R.drawable.card_blank, R.drawable.card_blank);
+        final ArrayList<Card> cards = categories.getCardTextures();
+        gridView.setColumnWidth(150);
+        final TextureLayoutAdapter textureAdapter = new TextureLayoutAdapter(this, cards);
+        gridView.setAdapter(textureAdapter);
     }
 
     //Activates when "Confirm" button is pressed, takes user to 'Main Menu' screen
