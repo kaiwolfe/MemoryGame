@@ -73,6 +73,7 @@ public class CardLayoutAdapter extends BaseAdapter {
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
         imageViewBack.setImageBitmap(scaledBitmap);
         imageViewBack.setAdjustViewBounds(true);
+
         final ImageView imageViewFront = (ImageView) convertView.findViewById(R.id.cardImageFront);
         imageViewFront.setImageResource(card.getFrontImage());
         BitmapDrawable drawable2 = (BitmapDrawable) imageViewFront.getDrawable();

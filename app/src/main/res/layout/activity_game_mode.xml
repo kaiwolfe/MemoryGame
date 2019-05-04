@@ -76,7 +76,7 @@
         app:layout_constraintTop_toBottomOf="@+id/button_math" />
 
     <Button
-        android:id="@+id/button_menu"
+        android:id="@+id/button_back"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

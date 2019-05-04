@@ -7,7 +7,7 @@
     tools:context=".End">
 
     <Button
-        android:id="@+id/button_menu"
+        android:id="@+id/button_mainmenu"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
         android:layout_marginBottom="8dp"
         android:text="Score"
         android:textSize="26sp"
-        app:layout_constraintBottom_toTopOf="@+id/button_menu"
+        app:layout_constraintBottom_toTopOf="@+id/button_mainmenu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_end"

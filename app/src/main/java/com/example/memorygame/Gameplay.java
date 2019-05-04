@@ -24,6 +24,7 @@ public class Gameplay extends AppCompatActivity {
     String difficulty;
     int round = 1;
     int numOfCards;
+    int numOfPairs;
     boolean gameWon = false;
 
     //Variables for determining score
@@ -35,6 +36,9 @@ public class Gameplay extends AppCompatActivity {
     //Variables for sound settings
     boolean musicOn;
     boolean sfxOn;
+
+    //Variable for texture setting
+    String texture;
 
     //Variable for sound player
     MediaPlayer music;
@@ -58,10 +62,15 @@ public class Gameplay extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         musicOn = bundle.getBoolean("music");
         sfxOn = bundle.getBoolean("sfx");
+        texture = bundle.getString("texture");
         gameMode = bundle.getString("mode");
         category = bundle.getString("category");
         difficulty = bundle.getString("difficulty");
-        //Will need more data: textures
+
+        //If round != 1, also bundle.getInt("score)" and .getInt("round")
+        //When last match:
+            //Create the intent, pass all information + score and round
+            //startActivity() -- gameplay and finish()
 
         //Assign specific sounds to each media player
         music = MediaPlayer.create(this, R.raw.music_gameplay);
@@ -80,10 +89,10 @@ public class Gameplay extends AppCompatActivity {
         else
             numOfCards = 12;
 
-
+        numOfPairs = numOfCards / 2;
 
         //COUNTDOWN TIMER SECTION
-        countDownText = (TextView) findViewById(R.id.timer);
+        countDownText = (TextView) findViewById(R.id.text_timer);
         setup();
     }
 
@@ -134,7 +143,7 @@ public class Gameplay extends AppCompatActivity {
         //Set difficulty multiplier
         if(difficulty.equals("easy"))
             difficultyMultiplier = 1;
-        else if(difficulty.equals("normal"))
+        else if(difficulty.equals("medium"))
             difficultyMultiplier = 2;
         else
             difficultyMultiplier = 3;
@@ -164,9 +173,11 @@ public class Gameplay extends AppCompatActivity {
     //Set card attributes
     public void setCardFaces(){
 
+        //Rather than a bunch of if statements, pass the variables
+        //Instead of if(diff=easy), getCards(3, easy), just getCards(numOfCards, difficulty)
+
+
         //Set faces of cards
-        //Use database for normal/language
-        //Use RNG for math
         if(category.equals("animals")){
             if(difficulty.equals("easy")){
                 Category categories = new Category(R.drawable.texture_fingerprint, R.drawable.card_blank);
@@ -177,7 +188,7 @@ public class Gameplay extends AppCompatActivity {
                 gridView.setAdapter(cardAdapter);
             }
 
-            else if(difficulty.equals("normal")){
+            else if(difficulty.equals("medium")){
                 Category categories = new Category(R.drawable.texture_fingerprint, R.drawable.card_blank);
                 final ArrayList<Card> cards = categories.getAnimalCards(6, "Medium");
                 gridView = findViewById(R.id.gridView);
@@ -200,22 +211,22 @@ public class Gameplay extends AppCompatActivity {
         else if(category.equals("nature")){
         }
 
-        else if(category.equals("add")){
+        else if(category.equals("addition")){
             if(difficulty.equals("easy")){
             }
 
-            else if(difficulty.equals("normal")){
+            else if(difficulty.equals("medium")){
             }
 
             else if(difficulty.equals("hard")){
             }
         }
 
-        else if(category.equals("sub")){
+        else if(category.equals("subtraction")){
             if(difficulty.equals("easy")){
             }
 
-            else if(difficulty.equals("normal")){
+            else if(difficulty.equals("medium")){
             }
 
             else if(difficulty.equals("hard")){
@@ -226,18 +237,7 @@ public class Gameplay extends AppCompatActivity {
             if(difficulty.equals("easy")){
             }
 
-            else if(difficulty.equals("normal")){
-            }
-
-            else if(difficulty.equals("hard")){
-            }
-        }
-
-        else if(category.equals("english")){
-            if(difficulty.equals("easy")){
-            }
-
-            else if(difficulty.equals("normal")){
+            else if(difficulty.equals("medium")){
             }
 
             else if(difficulty.equals("hard")){
@@ -248,7 +248,7 @@ public class Gameplay extends AppCompatActivity {
             if(difficulty.equals("easy")){
             }
 
-            else if(difficulty.equals("normal")){
+            else if(difficulty.equals("medium")){
             }
 
             else if(difficulty.equals("hard")){
@@ -259,7 +259,18 @@ public class Gameplay extends AppCompatActivity {
             if(difficulty.equals("easy")){
             }
 
-            else if(difficulty.equals("normal")){
+            else if(difficulty.equals("medium")){
+            }
+
+            else if(difficulty.equals("hard")){
+            }
+        }
+
+        else if(category.equals("german")){
+            if(difficulty.equals("easy")){
+            }
+
+            else if(difficulty.equals("medium")){
             }
 
             else if(difficulty.equals("hard")){

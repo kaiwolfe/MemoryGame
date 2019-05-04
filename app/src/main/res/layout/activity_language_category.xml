@@ -36,7 +36,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/button_eng"
+        android:id="@+id/button_spa"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -45,15 +45,15 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="24dp"
         android:onClick="launchGameplay"
-        android:text="English"
+        android:text="Spanish"
         android:textAllCaps="false"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/butto_spa"
+        app:layout_constraintBottom_toTopOf="@+id/button_jap"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/butto_spa"
+        android:id="@+id/button_jap"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -63,16 +63,16 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="8dp"
         android:onClick="launchGameplay"
-        android:text="Spanish"
+        android:text="Japanese"
         android:textAllCaps="false"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/button_menu"
+        app:layout_constraintBottom_toTopOf="@+id/button_back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_category" />
 
     <Button
-        android:id="@+id/button_jap"
+        android:id="@+id/button_ger"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -81,16 +81,16 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:onClick="launchGameplay"
-        android:text="Japanese"
+        android:text="German"
         android:textAllCaps="false"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/butto_spa" />
+        app:layout_constraintTop_toBottomOf="@+id/button_jap" />
 
     <Button
-        android:id="@+id/button_menu"
+        android:id="@+id/button_back"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -107,5 +107,52 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/button_spa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_category">
+
+        <RadioButton
+            android:id="@+id/radio_easy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="false"
+            android:clickable="true"
+            android:text="Easy"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/radio_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:clickable="true"
+            android:text="Medium"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/radio_hard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="false"
+            android:clickable="true"
+            android:text="Hard"
+            android:textSize="16sp" />
+    </RadioGroup>
 
 </android.support.constraint.ConstraintLayout>

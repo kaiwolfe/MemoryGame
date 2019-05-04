@@ -1,5 +1,6 @@
 package com.example.memorygame;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -61,12 +62,14 @@ public class End extends AppCompatActivity {
 
     //Activates when "Main Menu" button is pressed, takes user to 'Main Menu' screen
     public void endActivity(View view) {
-        //These needs more code; if it simply finishes, it will just return to Gameplay Screen
-
         //Play sound
         buttonSound.start();
 
-        //Ends activity
+        //Clears activity stack, ends activity, starts main menu
+        //THIS NEEDS TESTED
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
         finish();
     }
 

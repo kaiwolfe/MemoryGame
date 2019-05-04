@@ -11,11 +11,15 @@ import android.widget.ImageView;
 public class GameMode extends AppCompatActivity {
 
     //Variable for game settings
-    String gameMode = "";
+    String gameMode;
+    String difficulty = "medium";
 
     //Variables for sound settings
     boolean musicOn;
     boolean sfxOn;
+
+    //Variable for texture settingfs
+    String texture;
 
     //Variable for sound player
     MediaPlayer buttonSound;
@@ -29,6 +33,7 @@ public class GameMode extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         musicOn = bundle.getBoolean("music");
         sfxOn = bundle.getBoolean("sfx");
+        texture = bundle.getString("texture");
 
         //Assign specific sounds to each media player
         buttonSound = MediaPlayer.create(this, R.raw.button);
@@ -68,7 +73,9 @@ public class GameMode extends AppCompatActivity {
         //Pass data to activity
         intent.putExtra("music", musicOn);
         intent.putExtra("sfx", sfxOn);
+        intent.putExtra("texture", texture);
         intent.putExtra("mode", gameMode);
+        intent.putExtra("difficulty", difficulty);
 
         //Start activity
         startActivity(intent);

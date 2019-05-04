@@ -14,12 +14,11 @@ import java.util.ArrayList;
 public class Options extends AppCompatActivity {
 
     //Need to add in texture buttons
-    //Will probably be ImageViews; change to darker version of image when selected
-    //Selected texture needs to be passed back to main activity
+    //Will probably be ImageViews; change to darker version of image (or highlight?) when selected
+
     //Update music setting feature when separate music class is added
 
     //Use gridlayout for texture buttons; use image buttons, not imageview
-    //3 rows, 4 columns (12 textures)
 
     //Variables for sound settings
     boolean musicOn;
@@ -36,6 +35,9 @@ public class Options extends AppCompatActivity {
     //Variables for GridView of Textures
     GridView gridView;
 
+    //Variables for textures
+    String texture;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +47,7 @@ public class Options extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         musicOn = bundle.getBoolean("music");
         sfxOn = bundle.getBoolean("sfx");
+        texture = bundle.getString("texture");
 
         //Find the on/off image buttons
         musicBtn = (ImageView) findViewById(R.id.button_music);
@@ -58,6 +61,7 @@ public class Options extends AppCompatActivity {
         setSound(sfxOn);
         setMusic(musicOn);
 
+        //Create gridview of textures
         gridView = (GridView) findViewById(R.id.gridView_cardTextures);
         Category categories = new Category(R.drawable.card_blank, R.drawable.card_blank);
         final ArrayList<Card> cards = categories.getCardTextures();
@@ -134,6 +138,7 @@ public class Options extends AppCompatActivity {
         Intent intent = new Intent();
         intent.putExtra("music", musicOn);
         intent.putExtra("sfx", sfxOn);
+        intent.putExtra("texture", texture);
 
         // Activity finished ok, return the data
         setResult(RESULT_OK, intent);

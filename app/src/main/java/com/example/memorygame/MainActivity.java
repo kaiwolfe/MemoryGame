@@ -1,6 +1,7 @@
 package com.example.memorygame;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
     //Ex: Menu > Options: Sound Off > Menu > Button=Sound Plays
     //Only happens the first time after changing the setting?
 
+    //Texture variable
+    String texture = "texture_blue";
 
     //Variables used to know whether user turned sound on/off
     boolean musicOn = true;
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Starts music; will play through all activities
         music.start();
+
     }
 
     //Activates when "Play" button is pressed, takes user to 'Game Mode Selection' screen
@@ -50,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, GameMode.class);
         intent.putExtra("music", musicOn);
         intent.putExtra("sfx", sfxOn);
+        intent.putExtra("texture", texture);
 
         //Start activity
         startActivity(intent);
@@ -78,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Options.class);
         intent.putExtra("music", musicOn);
         intent.putExtra("sfx", sfxOn);
+        intent.putExtra("texture", texture);
 
         //Start activity; this activity will expect data to be passed back
         startActivityForResult(intent, REQUEST_CODE);
@@ -103,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
             //Get data from activity
             musicOn = intent.getExtras().getBoolean("music");
             sfxOn = intent.getExtras().getBoolean("sfx");
+            texture = intent.getExtras().getString("texture");
 
             //Toggle music/sound based on settings
             if(!musicOn)
