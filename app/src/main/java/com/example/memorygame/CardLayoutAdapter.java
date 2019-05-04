@@ -1,24 +1,16 @@
 package com.example.memorygame;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.MediaPlayer;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.wajahatkarim3.easyflipview.EasyFlipView;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 public class CardLayoutAdapter extends BaseAdapter {
     private final Context mContext;
@@ -28,8 +20,16 @@ public class CardLayoutAdapter extends BaseAdapter {
     static int choices = 0;
     static int image1;
     static int image2;
-    static EasyFlipView flip1;
-    static EasyFlipView flip2;
+    static FlipCard firstFlip;
+    static FlipCard secondFlip;
+    static int position1;
+    Runnable r = new Runnable() {
+        public void run() {
+            firstFlip.flipTheCardBack();
+            secondFlip.flipTheCardBack();
+            secondFlip.resetFlipCount();
+        }
+    };
 
     public CardLayoutAdapter(Context context, ArrayList<Card> cards) {
         this.mContext = context;
@@ -57,6 +57,7 @@ public class CardLayoutAdapter extends BaseAdapter {
     }
 
     // 5
+    @SuppressLint({"ClickableViewAccessibility", "InflateParams"})
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         Card card = cards.get(position);
@@ -80,65 +81,166 @@ public class CardLayoutAdapter extends BaseAdapter {
         imageViewFront.setImageBitmap(scaledBitmap2);
         imageViewFront.setAdjustViewBounds(true);
 
-        final EasyFlipView easyFlipView = (EasyFlipView) convertView;
-        easyFlipView.setOnFlipListener(new EasyFlipView.OnFlipAnimationListener() {
+
+        convertView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onViewFlipCompleted(EasyFlipView flipView, EasyFlipView.FlipState newCurrentSide)
-            {
+            public void onClick(View v) {
+
+                FlipCard flipCard = (FlipCard) v;
                 Card choice = (Card) getItem(position);
-
-                choices++;
-                if (choices == 1){
+                System.out.println("Position: " + position);
+                if(flipCard.getFlipCount() == 0){
+                    flipCard.flipTheCard();
                     image1 = choice.getBackImage();
-                    System.out.println("First Card: " + image1);
-                    flip1 = flipView;
-                    flipView.setAutoFlipBack(false);
-                }
-                else if (choices == 2) {
+                    firstFlip = flipCard;
+                    position1 = position;
+                } else if (flipCard.getFlipCount() == 1){
+                    if(position1 == position)
+                        return;
+                    flipCard.flipTheCard();
                     image2 = choice.getBackImage();
-                    System.out.println("Second Card: " + image2);
-                    flip2 = flipView;
-                    if(image1 == image2){
+                    secondFlip = flipCard;
+                    if (image1 == image2){
+                        flipCard.resetFlipCount();
                         System.out.println("IT'S A MATCH!");
-                        try {
-                            TimeUnit.MILLISECONDS.sleep(500);
-
-                            flip1.setOnFlipListener(null);
-                            flip1.setAutoFlipBack(false);
-                            flip2.setOnFlipListener(null);
-                            flip2.setAutoFlipBack(false);
-                            flip1.setFlipOnTouch(false);
-                            flip2.setFlipOnTouch(false);
-
-
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        choices = 0;
                     } else {
-                        System.out.println("No match, try again!");
-                        try {
-                            TimeUnit.SECONDS.sleep(1);
-                            flip1.flipTheView();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        flipView.setAutoFlipBack(true);
+                        System.out.println("Not a match!");
+                        v.postDelayed(r, 1500);
                     }
                 } else {
-                    if (choices == 4)
-                        choices = 0;
+                    return;
                 }
             }
         });
-        return easyFlipView;
-    }
 
-    public void flipViewsBack(EasyFlipView flip1, EasyFlipView flip2) {
-        EasyFlipView first = flip1;
-        EasyFlipView second = flip2;
-
-        first.flipTheView();
-        second.flipTheView();
-    }
+//        final EasyFlipView easyFlipView = (EasyFlipView) convertView;
+//        easyFlipView.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                ((EasyFlipView) v).flipTheView();
+//                Log.d("TOUCH EVENT", "Detected");
+//                System.out.println("TOUCH EVENT : Detected Touch");
+//
+//
+//                choices++;
+//                System.out.println("Choices: " + choices);
+//
+//                if(choices == 1){
+//                    position1 = position;
+//                    image1 = choice.getBackImage();
+//                    flip1 = ((EasyFlipView)v);
+//                    flip1.setFlipEnabled(false);
+//                } else if (choices == 2){
+//                    position2 = position;
+//                    if (position1 != position2){
+//                        //Gameplay.disableGridView();
+//                        image2 = choice.getBackImage();
+//                        flip2 = ((EasyFlipView)v);
+//                        System.out.println("First Card: " + image1);
+//                        System.out.println("Second Card: " + image2);
+//                        choices = 0;
+//                        if (image1 == image2) {
+//                            System.out.println("MATCH FOUND!");
+//                            Gameplay.enableGridView(this);
+//                            flip1.setVisibility(View.INVISIBLE);
+//                            flip1.setVisibility(View.INVISIBLE);
+//                        }else{
+//                            System.out.println("No match found. Try again.");
+//                            try {
+//                                //TimeUnit.SECONDS.sleep(1);
+//                                ((EasyFlipView)v).flipTheView();
+//                                flip1.flipTheView();
+//
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//                            Gameplay.enableGridView(this);
+//                        }
+//                    }else{
+//                        choices--;
+//                    }
+//                }
+//
+////
+////                    if (image1 == image2) {
+////                        System.out.println("IT'S A MATCH!");
+////                        try {
+////                            TimeUnit.MILLISECONDS.sleep(500);
+////                            flip1.setAutoFlipBack(false);
+////                            flip2.setAutoFlipBack(false);
+////                            flip1.setFlipOnTouch(false);
+////                            flip2.setFlipOnTouch(false);
+////                        } catch (InterruptedException e) {
+////                            e.printStackTrace();
+////                        }
+////                        choices = 0;
+////                        Gameplay.enableGridView();
+////                    } else {
+////                        System.out.println("No match, try again!");
+////                        try {
+////                            TimeUnit.SECONDS.sleep(1);
+////                            flip1.flipTheView();
+////                            flip2.flipTheView();
+////                        } catch (InterruptedException e) {
+////                            e.printStackTrace();
+////                        }
+////                        choices = 0;
+////                        Gameplay.enableGridView();
+////                    }
+////                }
+//                return false;
+//            }
+//        });
+//
+//            easyFlipView.setOnFlipListener(new EasyFlipView.OnFlipAnimationListener() {
+//                @Override
+//                public void onViewFlipCompleted(EasyFlipView flipView, EasyFlipView.FlipState newCurrentSide) {
+//                    Card choice = (Card) getItem(position);
+//                    choices++;
+//                    if (choices == 1) {
+//                        image1 = choice.getBackImage();
+//                        System.out.println("First Card: " + image1);
+//                        flip1 = (EasyFlipView) flipView;
+//                        flip1.flipTheView();
+//                        flip1.setAutoFlipBack(false);
+//                    } else if (choices == 2) {
+//                        image2 = choice.getBackImage();
+//                        System.out.println("Second Card: " + image2);
+//                        flip2 = (EasyFlipView) flipView;
+//                        flip2.flipTheView();
+//                        Gameplay.disableGridView();
+//                        if (image1 == image2) {
+//                            System.out.println("IT'S A MATCH!");
+//                            try {
+//                                TimeUnit.MILLISECONDS.sleep(500);
+//                                flip1.setAutoFlipBack(false);
+//                                flip2.setAutoFlipBack(false);
+//                                flip1.setFlipOnTouch(false);
+//                                flip2.setFlipOnTouch(false);
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            }
+//                            choices = 0;
+//                            Gameplay.enableGridView();
+//                        } else {
+//                            System.out.println("No match, try again!");
+//                            try {
+//                                Gameplay.enableGridView();
+//                                TimeUnit.SECONDS.sleep(1);
+//                                flip1.flipTheView();
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            }
+//                            flip2.setAutoFlipBack(true);
+//                        }
+//                    } else {
+//                        if (choices == 4) {
+//                            choices = 0;
+//                            Gameplay.enableGridView();
+//                        }
+//                    }
+//                }
+//            });
+            return convertView;
+        }
 }

@@ -1,4 +1,4 @@
-<android.widget.FrameLayout android:layout_height="wrap_content"
+<com.example.memorygame.FlipCard android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content">
 
     <ImageView android:id="@+id/cardImageFront"
@@ -6,6 +6,5 @@
     android:layout_height="wrap_content"
     android:src="@drawable/card_animal_easy_bear"
     tools:ignore="MissingConstraints"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" />
-</android.widget.FrameLayout>
+</com.example.memorygame.FlipCard>
