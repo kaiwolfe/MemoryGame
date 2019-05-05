@@ -8,6 +8,8 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -28,6 +30,7 @@ public class Gameplay extends AppCompatActivity {
     static int numOfPairs;
     boolean gameWon = false;
     private static boolean allMatched = false;
+    Category categories;
 
     //Variables for determining score
     static int difficultyMultiplier;
@@ -58,7 +61,7 @@ public class Gameplay extends AppCompatActivity {
         category = bundle.getString("category");
         gameWon = false;
 
-
+        int colWidth = 300;
         //If round != 1, also bundle.getInt("score)" and .getInt("round")
         //When last match:
         //Create the intent, pass all information + score and round
@@ -71,19 +74,24 @@ public class Gameplay extends AppCompatActivity {
         countDownText = (TextView) findViewById(R.id.text_timer);
         gridView = (GridView) findViewById(R.id.gridView);
         setup();
-        generateRound(category, difficulty, 300, numOfPairs, true);
+        categories = new Category(texture, R.drawable.card_blank);
+        generateRound(category, difficulty, colWidth, numOfPairs, true);
     }
 
     public static void setRoundPairs(){
+
         if (round == 1){
             numOfPairs = 3;
             timeLeftInMilliseconds = 30000;
+            System.out.println("Round:" + round);
         } else if (round == 2) {
              numOfPairs = 4;
             timeLeftInMilliseconds = 45000;
+            System.out.println("Round:" + round);
         } else {
             numOfPairs = 6;
             timeLeftInMilliseconds = 60000;
+            System.out.println("Round:" + round);
         }
     }
 
@@ -91,7 +99,6 @@ public class Gameplay extends AppCompatActivity {
         //if round completed in time.
         if (matchedPairs == numOfPairs){
             //increment the round
-            round++;
             setAllMatched(true);
             }
         }
@@ -107,10 +114,9 @@ public class Gameplay extends AppCompatActivity {
                 timeLeftInMilliseconds = millisUntilFinished;
                 updateTimer();
                 if (allMatched){
-                    countDownTimer.cancel();
                     nextRound();
-                    finish();
-
+                    this.cancel();
+                    countDownTimer = null;
                 }
             }
 
@@ -170,7 +176,7 @@ public class Gameplay extends AppCompatActivity {
 
 
     public void generateRound(String category, String difficulty, int columnSize, int numCardPairs, boolean firstRound) {
-        Category categories = new Category(texture, R.drawable.card_blank);
+
         gridView.setColumnWidth(columnSize);
 
         switch (category) {
@@ -211,8 +217,12 @@ public class Gameplay extends AppCompatActivity {
         if(firstRound) {
             cardAdapter = new CardLayoutAdapter(this, cards);
             gridView.setAdapter(cardAdapter);
+
         }else{
-            refresh();
+            cardAdapter.updateItems(cards);
+            gridView.invalidateViews();
+            gridView.invalidate();
+            gridView.setAdapter(cardAdapter);
         }
     }
 
@@ -271,9 +281,16 @@ public class Gameplay extends AppCompatActivity {
     }
 
     public void nextRound(){
-        round++;
-        matchedPairs = 0;
-        generateRound(category, difficulty, 250, numOfPairs, false);
+        if(round == 3){
+            gameWon = true;
+            endGame();
+        }else{
+            round++;
+            matchedPairs = 0;
+            setup();
+            setAllMatched(false);
+            generateRound(category, difficulty, 250, numOfPairs, false);
+        }
     }
 
 
@@ -289,11 +306,14 @@ public class Gameplay extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+
+        countDownTimer.cancel();
+        countDownTimer = null;
         Intent intent = new Intent(this, MainActivity.class);
         //
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-        countDownTimer.cancel();
+
         finish();
 
     }
@@ -303,7 +323,7 @@ public class Gameplay extends AppCompatActivity {
             @Override
             public void run() {
                 cardAdapter.notifyDataSetChanged();
-                gridView.invalidate();
+                gridView.invalidateViews();
             }
         });
 

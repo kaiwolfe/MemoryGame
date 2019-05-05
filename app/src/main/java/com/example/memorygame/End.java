@@ -52,6 +52,9 @@ public class End extends AppCompatActivity {
         if(!gameWon) {
             titleText.setText("You Lose!");
             gameWonBonus = 0;
+        } else {
+            titleText.setText("YOU WIN!");
+            gameWonBonus = 100;
         }
 
         //Set score

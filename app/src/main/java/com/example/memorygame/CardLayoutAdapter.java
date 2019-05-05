@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class CardLayoutAdapter extends BaseAdapter {
     private final Context mContext;
-    private ArrayList<Card> cards = new ArrayList<>();
+    private ArrayList<Card> cards;
 
     static int image1;
     static int image2;
@@ -34,7 +34,6 @@ public class CardLayoutAdapter extends BaseAdapter {
 
     public CardLayoutAdapter(Context context, ArrayList<Card> cards) {
         this.mContext = context;
-        //this.backImage = back;
         this.cards = cards;
 
     }
@@ -121,7 +120,10 @@ public class CardLayoutAdapter extends BaseAdapter {
 
     public void updateItems (ArrayList<Card> cardList){
         cards.clear();
+        if(cards.isEmpty())
+            System.out.println("EMPTIED LIST");
         cards.addAll(cardList);
+        System.out.println(cards.size());
         notifyDataSetChanged();
     }
 }

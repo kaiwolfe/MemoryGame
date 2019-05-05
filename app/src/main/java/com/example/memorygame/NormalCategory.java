@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -37,6 +39,7 @@ public class NormalCategory extends AppCompatActivity implements GestureDetector
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_normal_category);
+
 
         //Assign specific sounds to each media player
         buttonSound = MediaPlayer.create(this, R.raw.button);
@@ -197,8 +200,6 @@ public class NormalCategory extends AppCompatActivity implements GestureDetector
                     swipeLeft();
                 }
                 result = true;
-
-            } else {
 
             }
 
