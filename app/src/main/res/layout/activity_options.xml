@@ -35,7 +35,7 @@
     <GridView
         android:id="@+id/gridView_cardTextures"
         android:layout_width="match_parent"
-        android:layout_height="325dp"
+        android:layout_height="350dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:adjustViewBounds="true"

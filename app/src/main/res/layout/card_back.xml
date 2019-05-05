@@ -3,7 +3,6 @@
     <ImageView android:id="@+id/cardImageBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/texture_classic"
         tools:ignore="MissingConstraints"
         xmlns:tools="http://schemas.android.com/tools" />
 </com.example.memorygame.FlipCard>

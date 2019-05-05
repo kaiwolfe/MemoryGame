@@ -10,23 +10,16 @@ import android.view.View;
 public class MainActivity extends AppCompatActivity {
 
     //Need to create separate class for music player so it can be stopped in options
-    //Need to add card back option to intent (must pass to and obtain from options, must pass to Game Mode
 
     //Fix bug
     //Even when sound is off, button sound still plays the first time
     //Ex: Menu > Options: Sound Off > Menu > Button=Sound Plays
     //Only happens the first time after changing the setting?
 
-    //Texture variable
-    String texture = "texture_blue";
-
     //Variables used to know whether user turned sound on/off
-    boolean musicOn = true;
-    boolean sfxOn = true;
+    boolean musicOn;
+    boolean sfxOn;
 
-    //Create media players
-    MediaPlayer music;
-    MediaPlayer buttonSound;
 
     //Variable code used for receiving information from Options Activity
     public static final int REQUEST_CODE = 1;
@@ -37,24 +30,29 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Assigns specific sound files to each media player
-        buttonSound = MediaPlayer.create(this, R.raw.button);
-        music = MediaPlayer.create(this, R.raw.music_gameplay);
 
+        //Get music, sfx, and texture settings based on last use. Set's default to true if the first time playing.
+
+
+        AudioPlay.createGamePlayAudio(this, R.raw.music_gameplay);
+        getSettings();
+        AudioPlay.startGamePlayAudio(musicOn);
+
+        AudioPlay.createButtonSFX(this, R.raw.button);
+        AudioPlay.createToggleSFX(this, R.raw.toggle);
+        AudioPlay.createFlipUpSFX(this, R.raw.card_up);
+        AudioPlay.createFlipDownSFX(this, R.raw.card_down);
         //Starts music; will play through all activities
-        music.start();
-
+        //music.start();
+        //NEED TO LOOP THE MUSIC OR START ANOTHER RAW FILE UPON COMPLETION.
     }
 
     //Activates when "Play" button is pressed, takes user to 'Game Mode Selection' screen
     public void launchGameModeSelection(View view){
         //Play sound
-        buttonSound.start();
-
-        //Pass data to activity -- Will need more information
+        AudioPlay.playButtonSFX(sfxOn);
+        //Create GameMode Activity
         Intent intent = new Intent(this, GameMode.class);
-        intent.putExtra("music", musicOn);
-        intent.putExtra("sfx", sfxOn);
-        intent.putExtra("texture", texture);
 
         //Start activity
         startActivity(intent);
@@ -63,12 +61,9 @@ public class MainActivity extends AppCompatActivity {
     //Activates when "Help" button is pressed, takes user to 'Instructions' screen
     public void launchInstructions(View view){
         //Play sound
-        buttonSound.start();
-
-        //Pass data to activity
+        AudioPlay.playButtonSFX(sfxOn);
+        //Create Instructions Activity
         Intent intent = new Intent(this, Instructions.class);
-        intent.putExtra("music", musicOn);
-        intent.putExtra("sfx", sfxOn);
 
         //Start activity
         startActivity(intent);
@@ -77,13 +72,9 @@ public class MainActivity extends AppCompatActivity {
     //Activates when "Options" button is pressed, takes user to 'Options' screen
     public void launchOptions(View view){
         //Play sound
-        buttonSound.start();
-
-        //Pass data to activity
+        AudioPlay.playButtonSFX(sfxOn);
+        //Create Options Activity
         Intent intent = new Intent(this, Options.class);
-        intent.putExtra("music", musicOn);
-        intent.putExtra("sfx", sfxOn);
-        intent.putExtra("texture", texture);
 
         //Start activity; this activity will expect data to be passed back
         startActivityForResult(intent, REQUEST_CODE);
@@ -92,12 +83,9 @@ public class MainActivity extends AppCompatActivity {
     //Activates when "Credits" button is pressed, takes user to 'Credits' screen
     public void launchCredits(View view){
         //Play sound
-        buttonSound.start();
-
-        //Pass data to activity
+        AudioPlay.playButtonSFX(sfxOn);
+        //Create Credits Activity
         Intent intent = new Intent(this, Credits.class);
-        intent.putExtra("music", musicOn);
-        intent.putExtra("sfx", sfxOn);
 
         //Start activity
         startActivity(intent);
@@ -107,19 +95,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent intent){
         if(resultCode == RESULT_OK && requestCode == REQUEST_CODE){
             //Get data from activity
-            musicOn = intent.getExtras().getBoolean("music");
-            sfxOn = intent.getExtras().getBoolean("sfx");
-            texture = intent.getExtras().getString("texture");
+            getSettings();
+        }
+    }
 
-            //Toggle music/sound based on settings
-            if(!musicOn)
-                music.setVolume(0,0);
-            else
-                music.setVolume(1,1);
-            if(!sfxOn)
-                buttonSound.setVolume(0,0);
-            else
-                buttonSound.setVolume(1,1);
+    private void getSettings (){
+        SharedPreferences settings = getSharedPreferences("Settings", 0);
+        musicOn = settings.getBoolean("musicOn", true);
+        sfxOn = settings.getBoolean("sfxOn", true);
+        FlipCard.setflipCardSFX(sfxOn);
+
+        //Toggle music/sound based on settings
+        if(!musicOn)
+            AudioPlay.stopGamePlayAudio();
+        else{
+            AudioPlay.resetGamePlayAudio(this, R.raw.music_gameplay);
+            AudioPlay.startGamePlayAudio(true);
         }
     }
 

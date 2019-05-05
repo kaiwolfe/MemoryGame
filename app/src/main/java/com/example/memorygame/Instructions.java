@@ -1,6 +1,7 @@
 package com.example.memorygame;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,8 +10,8 @@ import android.view.View;
 public class Instructions extends AppCompatActivity {
 
     //Variables used to know whether user turned sound on/off
-    boolean musicOn = true;
-    boolean sfxOn = true;
+    boolean musicOn;
+    boolean sfxOn;
 
     //Create media players
     MediaPlayer buttonSound;
@@ -23,14 +24,8 @@ public class Instructions extends AppCompatActivity {
         //Assigns specific sound files to each media player
         buttonSound = MediaPlayer.create(this, R.raw.button);
 
-        //Get the sound options passed from main menu
-        Bundle bundle = getIntent().getExtras();
-        musicOn = bundle.getBoolean("music");
-        sfxOn = bundle.getBoolean("sfx");
-
         //Set sound/music based on value
-        setSound(sfxOn);
-        setMusic(musicOn);
+        getSettings();
     }
 
     //Activates when "Back" button is pressed, takes user to 'Main Menu' screen
@@ -59,5 +54,14 @@ public class Instructions extends AppCompatActivity {
         else{
             //Add code here to turn music off
         }
+    }
+
+    private void getSettings (){
+        SharedPreferences settings = getSharedPreferences("Settings", 0);
+        musicOn = settings.getBoolean("musicOn", true);
+        sfxOn = settings.getBoolean("sfxOn", true);
+
+        setMusic(musicOn);
+        setSound(sfxOn);
     }
 }

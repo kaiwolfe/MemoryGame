@@ -3,6 +3,9 @@ package com.example.memorygame;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.media.MediaPlayer;
+import android.provider.MediaStore;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -15,14 +18,14 @@ public class FlipCard extends RelativeLayout {
     private ImageView cardFront;
     private ImageView cardBack;
     private static int flipCount = 0;
-    FlipCard firstSelection;
+    static boolean sfxOn = true;
 
     public FlipCard(Context context){
         super(context);
         this.context = context;
     }
 
-    public FlipCard(Context context, AttributeSet attributeSet){
+    public FlipCard(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
         this.context = context;
     }
@@ -39,6 +42,8 @@ public class FlipCard extends RelativeLayout {
         findViews();
         //changeCameraDistance();
         loadAnimations();
+        //cardFlipUp = MediaPlayer.create(context, R.raw.card_up);
+        //cardFlipDown = MediaPlayer.create(context, R.raw.card_down);
     }
 
 //    private void changeCameraDistance() {
@@ -60,9 +65,11 @@ public class FlipCard extends RelativeLayout {
 
     public void flipTheCard() {
         flipCount++;
+        AudioPlay.playFlipUpSFX(sfxOn);
         if (getFlipCount() > 2) return;
         //if(mSetRightOut.isRunning() || mSetLeftIn.isRunning()) return;
         if (getChildCount() < 2) return;
+        //r.run();
         if (!mIsBackVisible) {
             mSetRightOut.setTarget(cardFront);
             mSetLeftIn.setTarget(cardBack);
@@ -81,6 +88,8 @@ public class FlipCard extends RelativeLayout {
     public void flipTheCardBack() {
         resetFlipCount();
         //if(mSetRightOut.isRunning() || mSetLeftIn.isRunning()) return;
+        //s.run();
+        AudioPlay.playFlipDownSFX(sfxOn);
         if (!mIsBackVisible) {
             mSetRightOut.setTarget(cardFront);
             mSetLeftIn.setTarget(cardBack);
@@ -101,5 +110,9 @@ public class FlipCard extends RelativeLayout {
     }
     public int getFlipCount(){
         return flipCount;
+    }
+
+    public static void setflipCardSFX(boolean on){
+        sfxOn = on;
     }
 }

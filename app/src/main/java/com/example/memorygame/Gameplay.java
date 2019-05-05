@@ -2,9 +2,11 @@ package com.example.memorygame;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.media.MediaPlayer;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.GridView;
@@ -14,86 +16,88 @@ import java.util.ArrayList;
 
 public class Gameplay extends AppCompatActivity {
 
-    private CountDownTimer countDownTimer;
-    private long timeLeftInMilliseconds = 30000;
-    TextView countDownText;
+    private static CountDownTimer countDownTimer;
+    private static long timeLeftInMilliseconds;
+    static TextView countDownText;
 
     //Variables for game settings
-    String gameMode;
-    String category;
-    String difficulty;
-    int round = 1;
-    int numOfCards;
-    int numOfPairs;
+    static String category;
+    static String difficulty;
+    static int round;
+    static int matchedPairs;
+    static int numOfPairs;
     boolean gameWon = false;
+    private static boolean allMatched = false;
 
     //Variables for determining score
-    int difficultyMultiplier;
-    int cardPoints;
+    static int difficultyMultiplier;
+    static int cardPoints;
     int roundBonus = 25;
-    int score = 0;
+    static int score = 0;
 
     //Variables for sound settings
-    boolean musicOn;
-    boolean sfxOn;
+    static boolean musicOn;
+    static boolean sfxOn;
 
     //Variable for texture setting
-    String texture;
-
-    //Variable for sound player
-    MediaPlayer music;
-    MediaPlayer cardUpSound;
-    MediaPlayer cardDownSound;
+    static int texture;
 
     //GridLayout variables
     static GridView gridView;
-    static int choices = 0;
-    static int image1;
-    static int image2;
-    Card choice = null;
+    static ArrayList<Card> cards;
+    CardLayoutAdapter cardAdapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gameplay);
-
+        matchedPairs = 0;
         //Get the sound options passed from main menu
         Bundle bundle = getIntent().getExtras();
-        musicOn = bundle.getBoolean("music");
-        sfxOn = bundle.getBoolean("sfx");
-        texture = bundle.getString("texture");
-        gameMode = bundle.getString("mode");
         category = bundle.getString("category");
-        difficulty = bundle.getString("difficulty");
+        gameWon = false;
+
 
         //If round != 1, also bundle.getInt("score)" and .getInt("round")
         //When last match:
-            //Create the intent, pass all information + score and round
-            //startActivity() -- gameplay and finish()
+        //Create the intent, pass all information + score and round
+        //startActivity() -- gameplay and finish()
 
-        //Assign specific sounds to each media player
-        music = MediaPlayer.create(this, R.raw.music_gameplay);
-        cardUpSound = MediaPlayer.create(this, R.raw.card_up);
-        cardDownSound = MediaPlayer.create(this, R.raw.card_down);
-
-        //Set sound/music based on value
-        setSound(sfxOn);
-        setMusic(musicOn);
-
-        //Set # of cards based on round
-        if(round == 1)
-            numOfCards = 6;
-        else if(round == 2)
-            numOfCards = 10;
-        else
-            numOfCards = 12;
-
-        numOfPairs = numOfCards / 2;
+        //Set sound, music, and texture based on settings.
+        getSettings();
 
         //COUNTDOWN TIMER SECTION
         countDownText = (TextView) findViewById(R.id.text_timer);
+        gridView = (GridView) findViewById(R.id.gridView);
         setup();
+        generateRound(category, difficulty, 300, numOfPairs, true);
+    }
+
+    public static void setRoundPairs(){
+        if (round == 1){
+            numOfPairs = 3;
+            timeLeftInMilliseconds = 30000;
+        } else if (round == 2) {
+             numOfPairs = 4;
+            timeLeftInMilliseconds = 45000;
+        } else {
+            numOfPairs = 6;
+            timeLeftInMilliseconds = 60000;
+        }
+    }
+
+    public static void compareMatchedToNumPairs(){
+        //if round completed in time.
+        if (matchedPairs == numOfPairs){
+            //increment the round
+            round++;
+            setAllMatched(true);
+            }
+        }
+
+    public static void setAllMatched(boolean matched){
+        allMatched = matched;
     }
 
     public void startTimer() {
@@ -102,23 +106,32 @@ public class Gameplay extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
                 timeLeftInMilliseconds = millisUntilFinished;
                 updateTimer();
+                if (allMatched){
+                    countDownTimer.cancel();
+                    nextRound();
+                    finish();
+
+                }
             }
 
             @Override
             public void onFinish() {
                 countDownText.setText("TIME'S UP!");
+                //Start End Activity
+                //Bundle the score, num matches, etc. to pass.
+                endGame();
             }
         }.start();
     }
 
-    public void updateTimer() {
+    public static void updateTimer() {
         int minutes = (int) timeLeftInMilliseconds / 60000;
         int seconds = (int) timeLeftInMilliseconds % 60000 / 1000;
 
         String timeLeftText = "";
         if (minutes < 10) timeLeftText = "0";
         timeLeftText += "" + minutes;
-        timeLeftText += " : " ;
+        timeLeftText += " : ";
         if (seconds < 10) timeLeftText += "0";
         timeLeftText += seconds;
 
@@ -126,164 +139,82 @@ public class Gameplay extends AppCompatActivity {
     }
 
 
-    public void setup(){
+    public void setup() {
+        setRoundPairs();
         setScoreValues();
-        setCardBacks();
-        setCardFaces();
-        populateCards();
-        createCards();
         startTimer();
     }
 
     //Set values used to calculate score
-    public void setScoreValues(){
+    public static void setScoreValues() {
         //Set points per match based on round
         cardPoints = (round * 5) + 5;
 
         //Set difficulty multiplier
-        if(difficulty.equals("easy"))
+        if (difficulty.equals("easy"))
             difficultyMultiplier = 1;
-        else if(difficulty.equals("medium"))
+        else if (difficulty.equals("medium"))
             difficultyMultiplier = 2;
         else
             difficultyMultiplier = 3;
     }
 
 
-    public void createCards(){
-        //Create array of cards using Card class
-        //
-    }
-
-    //Set card attributes
-    public void setCardBacks(){
-        //Set backs of cards based on texture setting
-    }
-
+    //USE THIS METHOD TO ITERATE THROUGH THE CARDS AND TURN OFF THEIR ONCLICKLISTERNERS
     @SuppressLint("ClickableViewAccessibility")
     public static void disableGridView() {
-        for (int i = 0; i < gridView.getChildCount(); i++){
-        }
-    }
-    public static void enableGridView() {
-        for (int i = 0; i < gridView.getChildCount(); i++){
+        for (int i = 0; i < gridView.getChildCount(); i++) {
+
         }
     }
 
-    //Set card attributes
-    public void setCardFaces(){
 
-        //Rather than a bunch of if statements, pass the variables
-        //Instead of if(diff=easy), getCards(3, easy), just getCards(numOfCards, difficulty)
+    public void generateRound(String category, String difficulty, int columnSize, int numCardPairs, boolean firstRound) {
+        Category categories = new Category(texture, R.drawable.card_blank);
+        gridView.setColumnWidth(columnSize);
 
+        switch (category) {
+            case "animals":
+                cards = categories.getAnimalCards(numCardPairs, difficulty);
+                break;
+            case "food":
+                cards = categories.getFoodCards(numCardPairs, difficulty);
+                break;
+            case "nature":
+                cards = categories.getNatureCards(numCardPairs, difficulty);
+                break;
+            case "addition":
+                //grab respective set of cards
 
-        //Set faces of cards
-        if(category.equals("animals")){
-            if(difficulty.equals("easy")){
-                Category categories = new Category(R.drawable.texture_fingerprint, R.drawable.card_blank);
-                final ArrayList<Card> cards = categories.getAnimalCards(3, "Easy");
-                gridView = findViewById(R.id.gridView);
-                gridView.setColumnWidth(300);
-                final CardLayoutAdapter cardAdapter = new CardLayoutAdapter(this, cards);
-                gridView.setAdapter(cardAdapter);
-            }
+                break;
+            case "subtraction":
+                //grab respective set of cards
 
-            else if(difficulty.equals("medium")){
-                Category categories = new Category(R.drawable.texture_fingerprint, R.drawable.card_blank);
-                final ArrayList<Card> cards = categories.getAnimalCards(6, "Medium");
-                gridView = findViewById(R.id.gridView);
-                final CardLayoutAdapter cardAdapter = new CardLayoutAdapter(this, cards);
-                gridView.setAdapter(cardAdapter);
-            }
+                break;
+            case "random":
+                //grab respective set of cards
 
-            else if(difficulty.equals("hard")){
-                Category categories = new Category(R.drawable.texture_fingerprint, R.drawable.card_blank);
-                final ArrayList<Card> cards = categories.getAnimalCards(8, "Hard");
-                gridView = findViewById(R.id.gridView);
-                final CardLayoutAdapter cardAdapter = new CardLayoutAdapter(this, cards);
-                gridView.setAdapter(cardAdapter);
-            }
+                break;
+            case "japanese":
+                //grab respective set of cards
+
+                break;
+            case "german":
+                //grab respective set of cards
+
+                break;
+            case "spanish":
+                //grab respective set of cards
+
+                break;
         }
-
-        else if(category.equals("food")){
+        if(firstRound) {
+            cardAdapter = new CardLayoutAdapter(this, cards);
+            gridView.setAdapter(cardAdapter);
+        }else{
+            refresh();
         }
-
-        else if(category.equals("nature")){
-        }
-
-        else if(category.equals("addition")){
-            if(difficulty.equals("easy")){
-            }
-
-            else if(difficulty.equals("medium")){
-            }
-
-            else if(difficulty.equals("hard")){
-            }
-        }
-
-        else if(category.equals("subtraction")){
-            if(difficulty.equals("easy")){
-            }
-
-            else if(difficulty.equals("medium")){
-            }
-
-            else if(difficulty.equals("hard")){
-            }
-        }
-
-        else if(category.equals("random")){
-            if(difficulty.equals("easy")){
-            }
-
-            else if(difficulty.equals("medium")){
-            }
-
-            else if(difficulty.equals("hard")){
-            }
-        }
-
-        else if(category.equals("spanish")){
-            if(difficulty.equals("easy")){
-            }
-
-            else if(difficulty.equals("medium")){
-            }
-
-            else if(difficulty.equals("hard")){
-            }
-        }
-
-        else if(category.equals("japanese")){
-            if(difficulty.equals("easy")){
-            }
-
-            else if(difficulty.equals("medium")){
-            }
-
-            else if(difficulty.equals("hard")){
-            }
-        }
-
-        else if(category.equals("german")){
-            if(difficulty.equals("easy")){
-            }
-
-            else if(difficulty.equals("medium")){
-            }
-
-            else if(difficulty.equals("hard")){
-            }
-        }
-
     }
-
-    //Put cards on screens
-    public void populateCards(){
-
-    }
-
 
     public void selectCard(View view) {
         //Play sound
@@ -293,28 +224,31 @@ public class Gameplay extends AppCompatActivity {
         //If second card, check against value
 
         //If not match
-            //Flip 2nd card, play sound
-            //Flip 1st card, play sound
+        //Flip 2nd card, play sound
+        //Flip 1st card, play sound
 
         //If match
-            //Play sound? (needs added)
-            //Add to score
-            //Remove cards
-            //Check if last match
-                //If so, do multiplier, then add round bonus to score
-                //Check round
-                    //If last, gameWon = true, go to End screen
-                    //Else, set up next round, round++, setup()
+        //Play sound? (needs added)
+        //Add to score
+        //Remove cards
+        //Check if last match
+        //If so, do multiplier, then add round bonus to score
+        //Check round
+        //If last, gameWon = true, go to End screen
+        //Else, set up next round, round++, setup()
+    }
+
+    public static void addPair() {
+        matchedPairs++;
+        addToScore();
     }
 
 
-    public void addToScore(){
-
+    public static void addToScore() {
         score += cardPoints;
-
     }
 
-    public void calculateScore(){
+    public void calculateScore() {
         score = score * difficultyMultiplier;
 
         //Only if round is won; adding AFTER multiplier is not a mistake
@@ -322,44 +256,57 @@ public class Gameplay extends AppCompatActivity {
     }
 
 
-
     //Pass data
-    public void endGame(){
+    public void endGame() {
         //Pass data to activity
         Intent intent = new Intent(this, End.class);
-        intent.putExtra("music", musicOn);
-        intent.putExtra("sfx", sfxOn);
+
+        calculateScore();
         intent.putExtra("gameWon", gameWon);
         intent.putExtra("score", score);
 
         //Start activity
         startActivity(intent);
+        this.finish();
+    }
+
+    public void nextRound(){
+        round++;
+        matchedPairs = 0;
+        generateRound(category, difficulty, 250, numOfPairs, false);
     }
 
 
+    private void getSettings() {
+        SharedPreferences settings = getSharedPreferences("Settings", 0);
+        round = settings.getInt("round", 1);
+        musicOn = settings.getBoolean("musicOn", true);
+        sfxOn = settings.getBoolean("sfxOn", true);
+        texture = settings.getInt("cardTexture", R.drawable.cardback_bluestripes);
+        difficulty = settings.getString("difficulty", "medium");
 
-    //Sets the sfx image button and sound volume based on value
-    public void setSound(boolean on){
-        if(on) {
-            cardUpSound.setVolume(1, 1);
-            cardDownSound.setVolume(1, 1);
-        }
-
-        else {
-            cardUpSound.setVolume(0, 0);
-            cardDownSound.setVolume(0, 0);
-        }
     }
 
-    //Sets the music image button and music volume based on value
-    public void setMusic(boolean on){
-        if(on){
-            //Add code here to turn music on
-        }
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        //
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        countDownTimer.cancel();
+        finish();
 
-        else{
-            //Add code here to turn music off
-        }
+    }
+    public void refresh()
+    {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                cardAdapter.notifyDataSetChanged();
+                gridView.invalidate();
+            }
+        });
+
     }
 
 }

@@ -11,7 +11,7 @@ import android.widget.TextView;
 public class End extends AppCompatActivity {
 
     //Variables for game settings
-    boolean gameWon;
+    boolean gameWon = false;
     int score = 0;
     int gameWonBonus = 50; //Bonus points for winning game
 
@@ -33,8 +33,7 @@ public class End extends AppCompatActivity {
 
         //Get the sound options passed from main menu
         Bundle bundle = getIntent().getExtras();
-        musicOn = bundle.getBoolean("music");
-        sfxOn = bundle.getBoolean("sfx");
+
         score = bundle.getInt("score");
         gameWon = bundle.getBoolean("gameWon");
 
@@ -68,7 +67,8 @@ public class End extends AppCompatActivity {
         //Clears activity stack, ends activity, starts main menu
         //THIS NEEDS TESTED
         Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
     }
@@ -92,4 +92,12 @@ public class End extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        //
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+    }
 }

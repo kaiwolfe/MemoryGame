@@ -1,6 +1,7 @@
 package com.example.memorygame;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,14 +13,11 @@ public class GameMode extends AppCompatActivity {
 
     //Variable for game settings
     String gameMode;
-    String difficulty = "medium";
+    String difficulty;
 
     //Variables for sound settings
     boolean musicOn;
     boolean sfxOn;
-
-    //Variable for texture settingfs
-    String texture;
 
     //Variable for sound player
     MediaPlayer buttonSound;
@@ -29,18 +27,13 @@ public class GameMode extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_mode);
 
-        //Get the sound options passed from main menu
-        Bundle bundle = getIntent().getExtras();
-        musicOn = bundle.getBoolean("music");
-        sfxOn = bundle.getBoolean("sfx");
-        texture = bundle.getString("texture");
-
         //Assign specific sounds to each media player
         buttonSound = MediaPlayer.create(this, R.raw.button);
 
         //Set sound/music based on value
-        setSound(sfxOn);
-        setMusic(musicOn);
+
+
+        getSettings();
     }
 
     //Activates when "Back" button is pressed, takes user to 'Main Menu' screen
@@ -63,22 +56,20 @@ public class GameMode extends AppCompatActivity {
 
         //Determine next activity based on button pressed
         Intent intent;
-        if(gameMode.equals("Math"))
+        if(gameMode.equals("math"))
             intent = new Intent(this, MathCategory.class);
-        else if(gameMode.equals("Language"))
+        else if(gameMode.equals("language"))
             intent = new Intent(this, LanguageCategory.class);
         else
             intent = new Intent(this, NormalCategory.class);
 
         //Pass data to activity
-        intent.putExtra("music", musicOn);
-        intent.putExtra("sfx", sfxOn);
-        intent.putExtra("texture", texture);
+
         intent.putExtra("mode", gameMode);
-        intent.putExtra("difficulty", difficulty);
 
         //Start activity
         startActivity(intent);
+        this.finish();
     }
 
     //Sets the sfx image button and sound volume based on value
@@ -100,4 +91,17 @@ public class GameMode extends AppCompatActivity {
         }
     }
 
+    private void getSettings (){
+        SharedPreferences settings = getSharedPreferences("Settings", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt("round", 1);
+
+        musicOn = settings.getBoolean("musicOn", true);
+        sfxOn = settings.getBoolean("sfxOn", true);
+        difficulty = settings.getString("difficulty", "medium");
+
+        //Toggle music/sound based on settings
+        setMusic(musicOn);
+        setSound(sfxOn);
+    }
 }

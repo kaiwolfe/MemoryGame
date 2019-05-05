@@ -2,6 +2,7 @@ package com.example.memorygame;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -20,14 +22,11 @@ public class TextureLayoutAdapter extends BaseAdapter {
     static int choices = 0;
     static int image1;
     static int image2;
-    static FlipCard firstFlip;
-    static FlipCard secondFlip;
+    static FlipCard flipped;
     static int position1;
     Runnable r = new Runnable() {
         public void run() {
-            firstFlip.flipTheCardBack();
-            secondFlip.flipTheCardBack();
-            secondFlip.resetFlipCount();
+            flipped.flipTheCardBack();
         }
     };
 
@@ -67,7 +66,7 @@ public class TextureLayoutAdapter extends BaseAdapter {
         }
 
         final ImageView imageViewBack = (ImageView) convertView.findViewById(R.id.cardImageBack);
-        imageViewBack.setImageResource(card.getBackImage());
+        imageViewBack.setImageResource(card.getFrontImage());
         BitmapDrawable drawable = (BitmapDrawable) imageViewBack.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
@@ -81,6 +80,18 @@ public class TextureLayoutAdapter extends BaseAdapter {
         imageViewFront.setImageBitmap(scaledBitmap2);
         imageViewFront.setAdjustViewBounds(true);
 
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Card choice = (Card) getItem(position);
+                Options.setCardBack(choice.getFrontImage());
+                Toast.makeText(mContext, "Texture changed!", Toast.LENGTH_SHORT).show();
+                flipped = ((FlipCard)v);
+                flipped.flipTheCard();
+                v.postDelayed(r,1000);
+            }
+        });
+
         return convertView;
-        }
+    }
 }

@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Debug;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.reflect.Array;
@@ -13,6 +14,7 @@ import java.util.Random;
 class Category {
     static int cardBack;
     static int cardBlank;
+    String text;
 
     private ArrayList<Card> cardTextures;
 
@@ -30,13 +32,13 @@ class Category {
         ArrayList<Card> animalCards = null;
         populateAnimalCards();
         switch (difficulty) {
-            case "Easy":
+            case "easy":
                 ArrayList<Card> easySet = animalCardSet.get(0);
                 Log.d("GET ANIMAL CARDS:", " Start");
                 Log.d("GET ANIMAL CARDS", "Number sets: " + numSets);
                 animalCards = randomSubset(easySet, numSets);
                 break;
-            case "Medium":
+            case "medium":
                 if (numSets > 6){
                     animalCards = randomSubset(animalCardSet.get(1), numSets);
                 } else {
@@ -47,7 +49,7 @@ class Category {
                         animalCards = randomSubset(animalCardSet.get(2), numSets);
                 }
                 break;
-            case "Hard":
+            case "hard":
                 animalCards = randomSubset(animalCardSet.get(3), numSets);
                 break;
         }
@@ -58,17 +60,17 @@ class Category {
         ArrayList<Card> foodCards = null;
         populateFoodCards();
         switch (difficulty) {
-            case "Easy":
+            case "easy":
                 foodCards = randomSubset(foodCardSet.get(0), numSets);
                 break;
-            case "Medium":
+            case "medium":
                 int pickSet = new Random().nextInt(2);
                 if(pickSet == 0)
                     foodCards = randomSubset(foodCardSet.get(1), numSets);
                 else
                     foodCards = randomSubset(foodCardSet.get(2), numSets);
                 break;
-            case "Hard":
+            case "hard":
                 foodCards = randomSubset(foodCardSet.get(3), numSets);
                 break;
         }
@@ -79,13 +81,13 @@ class Category {
         ArrayList<Card> natureCards = null;
         populateNatureCards();
         switch (difficulty) {
-            case "Easy":
+            case "easy":
                 natureCards = randomSubset(natureCardSet.get(0), numSets);
                 break;
-            case "Medium":
+            case "medium":
                 natureCards = randomSubset(natureCardSet.get(1), numSets);
                 break;
-            case "Hard":
+            case "hard":
                 natureCards = randomSubset(natureCardSet.get(2), numSets);
                 break;
         }
@@ -137,21 +139,21 @@ class Category {
 
     public ArrayList<Card> getCardTextures(){
         cardTextures = new ArrayList<>();
-        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_blue));
-        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_brick));
-        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_classic));
-        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_deer));
-        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_fingerprint));
-        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_flower));
-        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_green));
-        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_koi));
-        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_orange));
-        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_pink));
-        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_purple));
-        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_sakura));
-        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_stripes));
-        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.texture_tile));
-
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.cardback_bluestripes));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.cardback_brick));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.cardback_classic));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.cardback_deer));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.cardback_fingerprint));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.cardback_flower));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.cardback_green));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.cardback_koi));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.cardback_orange));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.cardback_pink));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.cardback_purple));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.cardback_sakura));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.cardback_stripes));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.cardback_tiedye));
+        cardTextures.add(new Card(R.drawable.card_blank, R.drawable.cardback_tile));
         return cardTextures;
     }
 
