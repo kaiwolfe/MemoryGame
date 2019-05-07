@@ -21,13 +21,19 @@ public class AudioPlay {
     public static boolean isGameplayPlayingAudio = false;
 
     public static void createGamePlayAudio(Context c, int id){
-        mediaPlayer = MediaPlayer.create(c,id);
-        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mediaPlayer.start();
-            }
-        });
+        if (!isGameplayPlayingAudio) {
+            mediaPlayer = MediaPlayer.create(c,id);
+            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mediaPlayer.start();
+                }
+            });
+        } else{
+            mediaPlayer.release();
+            isGameplayPlayingAudio = false;
+            createGamePlayAudio(c, id);
+        }
     }
 
     public static void startGamePlayAudio(boolean on) {

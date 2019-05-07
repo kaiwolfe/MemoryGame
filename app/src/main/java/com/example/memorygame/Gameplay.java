@@ -43,7 +43,7 @@ public class Gameplay extends AppCompatActivity {
     static boolean sfxOn;
 
     //Variable for texture setting
-    static int texture;
+    int texture = R.drawable.cardback_bluestripes;
 
     //GridLayout variables
     static GridView gridView;
@@ -62,10 +62,6 @@ public class Gameplay extends AppCompatActivity {
         gameWon = false;
 
         int colWidth = 300;
-        //If round != 1, also bundle.getInt("score)" and .getInt("round")
-        //When last match:
-        //Create the intent, pass all information + score and round
-        //startActivity() -- gameplay and finish()
 
         //Set sound, music, and texture based on settings.
         getSettings();
@@ -299,7 +295,8 @@ public class Gameplay extends AppCompatActivity {
         round = settings.getInt("round", 1);
         musicOn = settings.getBoolean("musicOn", true);
         sfxOn = settings.getBoolean("sfxOn", true);
-        texture = settings.getInt("cardTexture", R.drawable.cardback_bluestripes);
+        int temp = R.drawable.cardback_bluestripes;
+        texture = settings.getInt("cardTexture", temp);
         difficulty = settings.getString("difficulty", "medium");
 
     }

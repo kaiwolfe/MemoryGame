@@ -19,16 +19,7 @@ public class TextureLayoutAdapter extends BaseAdapter {
     //private final ArrayList<Drawable> backImage;
     private ArrayList<Card> cards = new ArrayList<>();
     //private final ArrayList<String> text;
-    static int choices = 0;
-    static int image1;
-    static int image2;
     static FlipCard flipped;
-    static int position1;
-    Runnable r = new Runnable() {
-        public void run() {
-            flipped.flipTheCardBack();
-        }
-    };
 
     public TextureLayoutAdapter(Context context, ArrayList<Card> cards) {
         this.mContext = context;
@@ -85,10 +76,9 @@ public class TextureLayoutAdapter extends BaseAdapter {
             public void onClick(View v) {
                 Card choice = (Card) getItem(position);
                 Options.setCardBack(choice.getFrontImage());
-                Toast.makeText(mContext, "Texture changed!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Texture selection changed!", Toast.LENGTH_SHORT).show();
                 flipped = ((FlipCard)v);
                 flipped.flipTheCard();
-                v.postDelayed(r,1000);
             }
         });
 

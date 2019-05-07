@@ -142,9 +142,10 @@ public class Options extends AppCompatActivity {
 
         SharedPreferences settings = getSharedPreferences("Settings", 0);
         SharedPreferences.Editor editor = settings.edit();
+        editor.putInt("cardTexture", cardBack);
         editor.putBoolean("musicOn", musicOn);
         editor.putBoolean("sfxOn", sfxOn);
-        editor.putInt("cardTexture", cardBack);
+
         editor.apply();
 
         // Activity finished ok, return the data
@@ -156,6 +157,7 @@ public class Options extends AppCompatActivity {
         SharedPreferences settings = getSharedPreferences("Settings", 0);
         musicOn = settings.getBoolean("musicOn", true);
         sfxOn = settings.getBoolean("sfxOn", true);
+        cardBack = settings.getInt("cardTexture", R.drawable.cardback_bluestripes);
 
        setMusic(musicOn, false);
        setSound(sfxOn, false);

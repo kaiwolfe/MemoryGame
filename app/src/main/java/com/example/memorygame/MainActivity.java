@@ -11,14 +11,10 @@ public class MainActivity extends AppCompatActivity {
 
     //Need to create separate class for music player so it can be stopped in options
 
-    //Fix bug
-    //Even when sound is off, button sound still plays the first time
-    //Ex: Menu > Options: Sound Off > Menu > Button=Sound Plays
-    //Only happens the first time after changing the setting?
-
     //Variables used to know whether user turned sound on/off
     boolean musicOn;
     boolean sfxOn;
+    int texture;
 
 
     //Variable code used for receiving information from Options Activity
@@ -42,8 +38,7 @@ public class MainActivity extends AppCompatActivity {
         AudioPlay.createToggleSFX(this, R.raw.toggle);
         AudioPlay.createFlipUpSFX(this, R.raw.card_up);
         AudioPlay.createFlipDownSFX(this, R.raw.card_down);
-        //Starts music; will play through all activities
-        //music.start();
+
         //NEED TO LOOP THE MUSIC OR START ANOTHER RAW FILE UPON COMPLETION.
     }
 
@@ -104,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences settings = getSharedPreferences("Settings", 0);
         musicOn = settings.getBoolean("musicOn", true);
         sfxOn = settings.getBoolean("sfxOn", true);
+        texture = settings.getInt("cardTexture", R.drawable.cardback_bluestripes);
         FlipCard.setflipCardSFX(sfxOn);
 
         //Toggle music/sound based on settings
