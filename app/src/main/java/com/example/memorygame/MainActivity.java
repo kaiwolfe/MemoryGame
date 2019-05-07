@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         AudioPlay.createToggleSFX(this, R.raw.toggle);
         AudioPlay.createFlipUpSFX(this, R.raw.card_up);
         AudioPlay.createFlipDownSFX(this, R.raw.card_down);
-        AudioPlay.createMatchSFX(this, R.raw.matched);
+        AudioPlay.createMatchSFX(this, R.raw.chime);
 
         //NEED TO LOOP THE MUSIC OR START ANOTHER RAW FILE UPON COMPLETION.
     }
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         if(!musicOn)
             AudioPlay.stopGamePlayAudio();
         else{
-            AudioPlay.resetGamePlayAudio(this, R.raw.music_gameplay);
+            AudioPlay.resetGamePlayAudio(this, R.raw.music_menu);
             AudioPlay.startGamePlayAudio(true);
         }
     }

@@ -70,6 +70,10 @@ public class FlipCard extends RelativeLayout {
         this.cardText = (TextView)findViewById(R.id.cardText);
     }
 
+    public boolean getSFX(){
+        return sfxOn;
+    }
+
     public void flipTheCard() {
         flipCount++;
         AudioPlay.playFlipUpSFX(sfxOn);

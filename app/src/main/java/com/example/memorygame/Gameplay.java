@@ -70,6 +70,8 @@ public class Gameplay extends AppCompatActivity {
 
         //Set sound, music, and texture based on settings.
         getSettings();
+        AudioPlay.resetGamePlayAudio(this, R.raw.music_gameplay);
+        AudioPlay.startGamePlayAudio(sfxOn);
 
         //COUNTDOWN TIMER SECTION
         countDownText = (TextView) findViewById(R.id.text_timer);
@@ -184,9 +186,9 @@ public class Gameplay extends AppCompatActivity {
     }
 
 
-    public void generateRound(String category, String difficulty, int columnSize, int numCardPairs, boolean firstRound) throws IOException {
+    public void generateRound(String category, String difficulty, int numColumns, int numCardPairs, boolean firstRound) throws IOException {
 
-        gridView.setColumnWidth(columnSize);
+        gridView.setNumColumns(numColumns);
 
         switch (category) {
             case "animals":
@@ -214,7 +216,7 @@ public class Gameplay extends AppCompatActivity {
             case "random":
                 //grab respective set of cards
                 cards = categories.getRandomCards(numCardPairs, difficulty);
-                type = "image";
+                type = "math";
                 break;
             case "japanese":
                 //grab respective set of cards
@@ -303,6 +305,7 @@ public class Gameplay extends AppCompatActivity {
     public static void addPair() {
         matchedPairs++;
         addToScore();
+        AudioPlay.playMatchSFX(sfxOn);
     }
 
 

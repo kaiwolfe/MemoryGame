@@ -609,7 +609,6 @@ class Category {
                 sign = "+";
             else if (category.equals("subtraction"))
                 sign = "-";
-
             else if (category.equals("random")) {
                 signNum = (int) rand.nextInt(2); //0 to 1
                 if (signNum == 0)

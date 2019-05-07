@@ -12,6 +12,9 @@ public class AudioPlay {
     public static MediaPlayer togglePlayer;
     public static MediaPlayer flipCardUp;
     public static MediaPlayer flipCardDown;
+    public static MediaPlayer cardMatch;
+
+
 
 
     public void onPrepared(MediaPlayer player) {
@@ -96,12 +99,12 @@ public class AudioPlay {
     }
 
     public static void createMatchSFX (Context c, int id){
-        flipCardDown = new MediaPlayer();
-        flipCardDown = MediaPlayer.create(c,id);
+        cardMatch = new MediaPlayer();
+        cardMatch = MediaPlayer.create(c,id);
     }
 
     public static void playMatchSFX(boolean on){
         if(on)
-            flipCardDown.start();
+            cardMatch.start();
     }
 }

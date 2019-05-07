@@ -37,13 +37,6 @@ public class End extends AppCompatActivity {
         score = bundle.getInt("score");
         gameWon = bundle.getBoolean("gameWon");
 
-        //Assign specific sounds to each media player
-        buttonSound = MediaPlayer.create(this, R.raw.button);
-
-        //Set sound/music based on value
-        setSound(sfxOn);
-        setMusic(musicOn);
-
         //Assign view variables to appropriate views
         titleText = (TextView) findViewById(R.id.title_end);
         scoreText = (TextView) findViewById(R.id.text_score);
@@ -64,9 +57,8 @@ public class End extends AppCompatActivity {
 
     //Activates when "Main Menu" button is pressed, takes user to 'Main Menu' screen
     public void endActivity(View view) {
-        //Play sound
-        buttonSound.start();
-
+        AudioPlay.playButtonSFX(sfxOn);
+        AudioPlay.stopGamePlayAudio();
         //Clears activity stack, ends activity, starts main menu
         //THIS NEEDS TESTED
         Intent intent = new Intent(this, MainActivity.class);
@@ -76,29 +68,10 @@ public class End extends AppCompatActivity {
         finish();
     }
 
-    //Sets the sfx image button and sound volume based on value
-    public void setSound(boolean on){
-        if(on)
-            buttonSound.setVolume(1,1);
-        else
-            buttonSound.setVolume(0,0);
-    }
-
-    //Sets the music image button and music volume based on value
-    public void setMusic(boolean on){
-        if(on){
-            //Add code here to turn music on
-        }
-
-        else{
-            //Add code here to turn music off
-        }
-    }
-
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
-        //
+        AudioPlay.stopGamePlayAudio();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
