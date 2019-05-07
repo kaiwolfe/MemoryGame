@@ -78,7 +78,7 @@ public class TextureLayoutAdapter extends BaseAdapter {
                 Options.setCardBack(choice.getFrontImage());
                 Toast.makeText(mContext, "Texture selection changed!", Toast.LENGTH_SHORT).show();
                 flipped = ((FlipCard)v);
-                flipped.flipTheCard();
+                flipped.flipTheCardBack();
             }
         });
 
