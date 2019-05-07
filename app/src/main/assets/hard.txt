@@ -1,0 +1,43 @@
+Second	Segundo	Byou	Sekunde
+Minute	Minuto	Bun	Minute
+Hour	Hora	Toki	Stunde
+Day	Dia	Hi	Tag
+Week	Semana	Shuukan	Woche
+Month	Mes	Tsuki	Monat
+Year	Ano	Toshi	Jahr
+Monday	Lunes	Getsuyobi	Montag
+Tuesday	Martes	Kayobi	Dienstag
+Wednesday	Miercoles	Suiyobi	Mittwoch
+Thursday	Jueves	Mokuyobi	Donnerstag
+Friday	Viernes	Kinyobi	Freitag
+Saturday	Sabado	Doyobi	Samstag
+Sunday	Domingo	Nichiyobi	Sonntag
+January	Enero	Ichi Gatsu	Januar
+February	Febrero	Ni Gatsu	Februar
+March	Marzo	San Gatsu	Marz
+April	Abril	Shi Gatsu	April
+May	Mayo	Go Gatsu	Mai
+June	Junio	Roku Gatsu	Juni
+July	Julio	Shichi Gatsu	Juli
+August	Agosto	Hachi Gatsu	August
+September	Septiembre	Ku Gatsu	September
+October	Octubre	Juu Gatsu	Oktober
+November	Noviembre	Juuichi Gatsu	November
+December	Diciembre	Juuni Gatsu	Dezember
+Big	Grande	Ookii	Grob
+Small	Pequeno	Chiisai	Klein
+Difficult	Dificil	Muzukashii	Schwierig
+Easy	Facil	Yasahii	Leicht
+Good	Bueno	Yoi	Gut
+Bad	Malo	Warui	Schlecht
+Hello	Hola	Konnichiwa	Hallo
+Good morning	Buenos dias	Ohayou	Guten morgen
+Good afternoon	Buenas tardes	Konbanwa	Guten tag
+Good night	Buenas noches	Oyasumi nasai	Guten abend
+Goodbye	Adios	Sayounara	Auf wiedersehen
+Please	Por favor	Onegai shimasu	Bittte
+Thank you	Gracias	Arigatou	Danke
+Sorry	Lo siento	Gomennasai	Entschuldigung
+How are you	Como estas	Ogenki desu ka	Wie geht es dir
+Yes	Si	Hai	Ja
+No	No	Iie	Nein
