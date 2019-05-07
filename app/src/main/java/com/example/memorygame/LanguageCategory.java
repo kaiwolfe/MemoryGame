@@ -40,7 +40,6 @@ public class LanguageCategory extends AppCompatActivity implements GestureDetect
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_language_category);
 
-
         //Set radio button references
         easy = findViewById(R.id.radio_easy);
         medium = findViewById(R.id.radio_medium);

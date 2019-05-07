@@ -1,14 +1,17 @@
 package com.example.memorygame;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 
-public class MathCategory extends AppCompatActivity {
+public class MathCategory extends AppCompatActivity implements GestureDetector.OnGestureListener {
 
     //Variables for game settings
     String category;
@@ -20,6 +23,8 @@ public class MathCategory extends AppCompatActivity {
 
     //Variable for sound player
     MediaPlayer buttonSound;
+
+    GestureDetector gestureDetector;
 
     //Variables for radio buttons
     RadioButton easy;
@@ -43,6 +48,8 @@ public class MathCategory extends AppCompatActivity {
         medium = findViewById(R.id.radio_medium);
         hard = findViewById(R.id.radio_hard);
 
+        getSettings();
+
         //Set initial checked button based on selected difficulty
         if(difficulty.equals("medium")){
             easy.setChecked(false);
@@ -59,6 +66,9 @@ public class MathCategory extends AppCompatActivity {
             medium.setChecked(false);
             hard.setChecked(true);
         }
+
+        gestureDetector = new GestureDetector(this);
+
     }
 
     public void onRadioButtonClicked(View view) {
@@ -79,6 +89,13 @@ public class MathCategory extends AppCompatActivity {
                 if(checked)
                     difficulty = "medium";
         }
+    }
+
+    private void getSettings() {
+        SharedPreferences settings = getSharedPreferences("Settings", 0);
+        musicOn = settings.getBoolean("musicOn", true);
+        sfxOn = settings.getBoolean("sfxOn", true);
+        difficulty = settings.getString("difficulty","medium");
     }
 
     //To Normal
@@ -146,6 +163,60 @@ public class MathCategory extends AppCompatActivity {
         else{
             //Add code here to turn music off
         }
+    }
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent downEvent, MotionEvent moveEvent, float velocityX, float velocityY) {
+        boolean result = false;
+        float diffY = moveEvent.getY() - downEvent.getY();
+        float diffX = moveEvent.getX() - downEvent.getX();
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+            //Detect left or right swipe
+            if (Math.abs(diffX) > 100 && Math.abs(velocityX) > 100) {
+                if (diffX > 0) {
+                    //Swipe right detected
+                    swipeRight();
+                } else {
+                    //Swipe left detected
+                    swipeLeft();
+                }
+                result = true;
+
+            }
+
+        }
+        return result;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        gestureDetector.onTouchEvent(event);
+        return super.onTouchEvent(event);
     }
 
 }

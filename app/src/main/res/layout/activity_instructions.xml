@@ -92,7 +92,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:text="When starting a game, you can select a game mode and category. Game modes are the type of memory game you want to play. They are normal, math, and language. Normal mode you find matching pictures. Math mode you match numbers to expressions. Language mode you match words in English to words in another language. The categories determine what will be on the card faces in each game mode. In some categories, a difficulty can be chosen."
+                android:text="When starting a game, you can select a game mode and category. Game modes are the type of memory game you want to play. They are normal, math, and language. Normal mode you find matching pictures. Math mode you match numbers to expressions. Language mode you match words in English to words in another language. The categories determine what will be on the card faces in each game mode. In each category, a difficulty can be chosen."
                 android:textAlignment="center"
                 android:textSize="16sp" />
 
@@ -119,7 +119,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:gravity="center_horizontal"
-                android:text="At the end of each round, whether you win or lose, you will be shown your current score. The score is based on the number of matches you made, the time it took you, the number of rounds you win, whether you won the game, and the chosen difficulty (if applicable)."
+                android:text="At the end of each round, whether you win or lose, you will be shown your current score. The score is based on the number of matches you made, the number of rounds you win, whether you won the game, and the chosen difficulty."
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
