@@ -77,7 +77,7 @@ public class CardLayoutAdapterWords extends BaseAdapter {
         final ImageView imageViewFront = (ImageView) convertView.findViewById(R.id.cardImageFront);
         final TextView textViewFront = (TextView) convertView.findViewById(R.id.cardText);
         Word word = card.getWord();
-        if(card.getEnglish()){
+        if(card.getEnglishOrExpression()){
             textViewFront.setText((word.getWord("eng")));
         } else {
             textViewFront.setText((word.getWord(Gameplay.getLanguage())));

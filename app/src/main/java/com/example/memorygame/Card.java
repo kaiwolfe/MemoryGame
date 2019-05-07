@@ -1,14 +1,12 @@
 package com.example.memorygame;
 
-import android.media.audiofx.DynamicsProcessing;
-
 public class Card {
     private int backImage;
     private int frontImage;
     private String text;
     private Word word;
     private Equation equation;
-    boolean english;
+    boolean englishOrExpression;
 
 
     public Card (int backImage, int frontImage) {
@@ -22,18 +20,26 @@ public class Card {
         this.text = text;
     }
 
-    public Card (int backImage, int frontImage, Word word, boolean english) {
+    public Card (int backImage, int frontImage, Word word, boolean englishOrExpression) {
         this.backImage = backImage;
         this.frontImage = frontImage;
         this.word = word;
-        this.english = english;
+        this.englishOrExpression = englishOrExpression;
     }
 
-    public Card (int backImage, int frontImage, Equation equation, boolean english) {
+    public Card (int backImage, int frontImage, Equation equation, boolean englishOrExpression) {
         this.backImage = backImage;
         this.frontImage = frontImage;
         this.equation = equation;
-        this.english = english;
+        this.englishOrExpression = englishOrExpression;
+    }
+
+    public Card (int backImage, int frontImage, Word word, Equation equation, boolean englishOrExpression) {
+        this.backImage = backImage;
+        this.frontImage = frontImage;
+        this.equation = equation;
+        this.englishOrExpression = englishOrExpression;
+        this.word = word;
     }
 
     public int getBackImage() {
@@ -45,9 +51,10 @@ public class Card {
     }
 
     public String getText(){ return text;}
-    public boolean getEnglish(){ return english;}
-    public void setEnglish(boolean isEnglish){
-        english = isEnglish;
+    public boolean getEnglishOrExpression(){ return englishOrExpression;}
+
+    public void setEnglishOrExpression(boolean isEnglishOrExpression){
+        englishOrExpression = isEnglishOrExpression;
     }
     public Word getWord(){ return word;}
     public Equation getEquation(){ return equation;}

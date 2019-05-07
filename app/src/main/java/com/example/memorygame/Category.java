@@ -1,23 +1,13 @@
 package com.example.memorygame;
 
 import android.content.Context;
-import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
-import android.graphics.drawable.Drawable;
-import android.os.Debug;
 import android.util.Log;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -32,19 +22,21 @@ class Category {
     private ArrayList<ArrayList<Card>> foodCardSet;
     private ArrayList<ArrayList<Card>> natureCardSet;
     private ArrayList<ArrayList<Card>> wordCardSet;
+    private ArrayList<ArrayList<Card>> mathCardSets;
 
     ArrayList<Word> easyWordList = new ArrayList<Word>();
     ArrayList<Word> normalWordList = new ArrayList<Word>();
     ArrayList<Word> hardWordList = new ArrayList<Word>();
 
+    ArrayList<Equation> equationList = new ArrayList<Equation>();
 
 
-    public Category(int cardBack, int cardBlank){
+    public Category(int cardBack, int cardBlank) {
         Category.cardBack = cardBack;
         Category.cardBlank = cardBlank;
     }
 
-    public ArrayList<Card> getAnimalCards(int numSets, String difficulty){
+    public ArrayList<Card> getAnimalCards(int numSets, String difficulty) {
         ArrayList<Card> animalCards = null;
         populateAnimalCards();
         switch (difficulty) {
@@ -55,7 +47,7 @@ class Category {
                 animalCards = randomSubset(easySet, numSets);
                 break;
             case "medium":
-                if (numSets > 6){
+                if (numSets > 6) {
                     animalCards = randomSubset(animalCardSet.get(1), numSets);
                 } else {
                     int pickSet = new Random().nextInt(2);
@@ -72,7 +64,7 @@ class Category {
         return animalCards;
     }
 
-    public ArrayList<Card> getFoodCards(int numSets, String difficulty){
+    public ArrayList<Card> getFoodCards(int numSets, String difficulty) {
         ArrayList<Card> foodCards = null;
         populateFoodCards();
         switch (difficulty) {
@@ -81,7 +73,7 @@ class Category {
                 break;
             case "medium":
                 int pickSet = new Random().nextInt(2);
-                if(pickSet == 0)
+                if (pickSet == 0)
                     foodCards = randomSubset(foodCardSet.get(1), numSets);
                 else
                     foodCards = randomSubset(foodCardSet.get(2), numSets);
@@ -93,7 +85,7 @@ class Category {
         return foodCards;
     }
 
-    public ArrayList<Card> getNatureCards(int numSets, String difficulty){
+    public ArrayList<Card> getNatureCards(int numSets, String difficulty) {
         ArrayList<Card> natureCards = null;
         populateNatureCards();
         switch (difficulty) {
@@ -147,7 +139,7 @@ class Category {
             pullFrom.remove(random);
 //            Log.d("RANDOM SUBSET: ", "New array size = " + pullFrom.size());
 
-        } while((subset.size() != numSets * 2));
+        } while ((subset.size() != numSets * 2));
 
         ArrayList<Integer> indexAdded = new ArrayList<>();
         do {
@@ -156,7 +148,7 @@ class Category {
             int random = new Random().nextInt(subset.size());
 //            Log.d("RANDOM SUBSET MIXING", "Random int = " + random);
             boolean alreadyAdded = false;
-            if(!indexAdded.isEmpty()) {
+            if (!indexAdded.isEmpty()) {
                 for (int i = 0; i < indexAdded.size(); i++) {
 
                     if (random == indexAdded.get(i)) {
@@ -165,18 +157,17 @@ class Category {
                     }
                 }
             }
-            if(!alreadyAdded){
+            if (!alreadyAdded) {
                 indexAdded.add(random);
                 mixedSubset.add(subset.get(random));
             }
-        } while(indexAdded.size() != numSets * 2);
+        } while (indexAdded.size() != numSets * 2);
 
         return mixedSubset;
     }
 
 
-
-    public ArrayList<Card> getCardTextures(){
+    public ArrayList<Card> getCardTextures() {
         cardTextures = new ArrayList<>();
         cardTextures.add(new Card(R.drawable.card_blank, R.drawable.cardback_bluestripes));
         cardTextures.add(new Card(R.drawable.card_blank, R.drawable.cardback_brick));
@@ -196,7 +187,7 @@ class Category {
         return cardTextures;
     }
 
-    private void populateAnimalCards(){
+    private void populateAnimalCards() {
         animalCardSet = new ArrayList<>();
         ArrayList<Card> easyAnimalCards = new ArrayList<>();
         ArrayList<Card> normalSet1AnimalCards = new ArrayList<>();
@@ -256,7 +247,7 @@ class Category {
         animalCardSet.add(hardAnimalCards);
     }
 
-    private void populateFoodCards(){
+    private void populateFoodCards() {
         foodCardSet = new ArrayList<>();
         ArrayList<Card> easyFoodCards = new ArrayList<>();
         ArrayList<Card> normalSet1FoodCards = new ArrayList<>();
@@ -335,7 +326,7 @@ class Category {
         foodCardSet.add(hardFoodCards);
     }
 
-    private void populateNatureCards(){
+    private void populateNatureCards() {
         natureCardSet = new ArrayList<>();
         ArrayList<Card> easyNatureCards = new ArrayList<>();
         ArrayList<Card> normalNatureCards = new ArrayList<>();
@@ -407,7 +398,7 @@ class Category {
         String line;
 
         //Loop to read through file line by line
-        while((line = buffer.readLine()) != null){
+        while ((line = buffer.readLine()) != null) {
             //Split line of text into parts and put into array
             String[] words = line.split("\t");
 
@@ -416,7 +407,7 @@ class Category {
         }
         buffer.close();
 
-        for (int i = 0; i < easyWordList.size(); i++){
+        for (int i = 0; i < easyWordList.size(); i++) {
             easyWordCards.add(new Card(cardBlank, cardBack, easyWordList.get(i), true));
         }
 
@@ -427,7 +418,7 @@ class Category {
         buffer = new BufferedReader(new InputStreamReader(is));
 
         //Loop to read through file line by line
-        while((line = buffer.readLine()) != null){
+        while ((line = buffer.readLine()) != null) {
             //Split line of text into parts and put into array
             String[] words = line.split("\t");
 
@@ -436,7 +427,7 @@ class Category {
         }
         buffer.close();
 
-        for (int i = 0; i < normalWordList.size(); i++){
+        for (int i = 0; i < normalWordList.size(); i++) {
             normalWordCards.add(new Card(cardBlank, cardBack, normalWordList.get(i), true));
         }
 
@@ -447,7 +438,7 @@ class Category {
         buffer = new BufferedReader(new InputStreamReader(is));
 
         //Loop to read through file line by line
-        while((line = buffer.readLine()) != null){
+        while ((line = buffer.readLine()) != null) {
             //Split line of text into parts and put into array
             String[] words = line.split("\t");
 
@@ -455,12 +446,125 @@ class Category {
             hardWordList.add(new Word(words[0], words[1], words[2], words[3]));
         }
         buffer.close();
-        for (int i = 0; i < hardWordList.size(); i++){
+        for (int i = 0; i < hardWordList.size(); i++) {
             hardWordCards.add(new Card(cardBlank, cardBack, hardWordList.get(i), true));
         }
 
         wordCardSet.add(easyWordCards);
         wordCardSet.add(normalWordCards);
         wordCardSet.add(hardWordCards);
+    }
+
+    public void populateAdditionCards(int numOfPairs) {
+        ArrayList<Card> easyAdditionCards = new ArrayList<>();
+        ArrayList<Card> normalAdditionCards = new ArrayList<>();
+        ArrayList<Card> hardAdditionCards = new ArrayList<>();
+
+        equationList = makeEquations("easy", "addition", numOfPairs);
+        for (int i = 0; i < equationList.size(); i++) {
+            easyAdditionCards.add(new Card(cardBack, cardBlank, equationList.get(i), true));
+        }
+        equationList = makeEquations("medium", "addition", numOfPairs);
+        for (int i = 0; i < equationList.size(); i++) {
+            normalAdditionCards.add(new Card(cardBack, cardBlank, equationList.get(i), true));
+        }
+        equationList = makeEquations("hard", "addition", numOfPairs);
+        for (int i = 0; i < equationList.size(); i++) {
+            hardAdditionCards.add(new Card(cardBack, cardBlank, equationList.get(i), true));
+        }
+    }
+
+    public void populateSubtractionCards(int numOfPairs) {
+        ArrayList<Card> easySubtractionCards = new ArrayList<>();
+        ArrayList<Card> normalSubtractionCards = new ArrayList<>();
+        ArrayList<Card> hardSubtractionCards = new ArrayList<>();
+
+        equationList = makeEquations("easy", "subtraction", numOfPairs);
+        for (int i = 0; i < equationList.size(); i++) {
+            easySubtractionCards.add(new Card(cardBack, cardBlank, equationList.get(i), true));
+        }
+        equationList = makeEquations("medium", "subtraction", numOfPairs);
+        for (int i = 0; i < equationList.size(); i++) {
+            normalSubtractionCards.add(new Card(cardBack, cardBlank, equationList.get(i), true));
+        }
+        equationList = makeEquations("hard", "subtraction", numOfPairs);
+        for (int i = 0; i < equationList.size(); i++) {
+            hardSubtractionCards.add(new Card(cardBack, cardBlank, equationList.get(i), true));
+        }
+    }
+
+    public void populateRandomCards(int numOfPairs) {
+        ArrayList<Card> easyRandomCards = new ArrayList<>();
+        ArrayList<Card> normalRandomCards = new ArrayList<>();
+        ArrayList<Card> hardRandomCards = new ArrayList<>();
+
+        equationList = makeEquations("easy", "subtraction", numOfPairs);
+        for (int i = 0; i < equationList.size(); i++) {
+            easyRandomCards.add(new Card(cardBack, cardBlank, equationList.get(i), true));
+        }
+        equationList = makeEquations("medium", "subtraction", numOfPairs);
+        for (int i = 0; i < equationList.size(); i++) {
+            normalRandomCards.add(new Card(cardBack, cardBlank, equationList.get(i), true));
+        }
+        equationList = makeEquations("hard", "subtraction", numOfPairs);
+        for (int i = 0; i < equationList.size(); i++) {
+            hardRandomCards.add(new Card(cardBack, cardBlank, equationList.get(i), true));
+        }
+    }
+
+    public ArrayList<Equation> makeEquations(String difficulty, String category, int numOfPairs) {
+        ArrayList<Equation> equationList = new ArrayList<>();
+        Random rand = new Random();
+        int[] answers = new int[numOfPairs];
+
+        //Loop through until all cards are created
+        int counter = (numOfPairs - 1);
+        while (counter >= 0) {
+
+            //Set range based on difficulty
+            int range;
+            if (difficulty.equals("easy"))
+                range = 11;
+            else if (difficulty.equals("hard"))
+                range = 501;
+            else
+                range = 51;
+
+            //Set the sign
+            int signNum;
+            String sign = "";
+
+            if (category.equals("addition"))
+                sign = "+";
+            else if (category.equals("subtraction"))
+                sign = "-";
+
+            else if (category.equals("random")) {
+                signNum = (int) rand.nextInt(2); //0 to 1
+                if (signNum == 0)
+                    sign = "+";
+                else if (signNum == 1)
+                    sign = "-";
+            }
+            //Create Equation object with generated numbers
+            Equation equation = new Equation((int) rand.nextInt(range), sign, (int) rand.nextInt(range));
+
+            //Cycle through answers array and compare answer against values to avoid duplicate cards
+            boolean isTaken = false;
+            for (int k = 0; k < answers.length; k++) {
+                if (equation.getAnswerAsInt() == answers[k]) {
+                    System.out.println("Equation already exists!");
+                    isTaken = true;
+                }
+            }
+            //If the answer isn't already on a card, add the equation and answer to the arrays
+            if (!isTaken) {
+                System.out.println("Equation is unique!");
+                equationList.add(equation);
+                answers[counter] = equation.getAnswerAsInt();
+                counter--;
+            }
+        }
+        return equationList;
     }
 }
