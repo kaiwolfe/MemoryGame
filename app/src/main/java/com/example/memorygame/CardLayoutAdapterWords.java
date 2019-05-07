@@ -36,7 +36,7 @@ public class CardLayoutAdapterWords extends BaseAdapter {
             Gameplay.compareMatchedToNumPairs();
             firstFlip.setVisibility(View.INVISIBLE);
             secondFlip.setVisibility(View.INVISIBLE);
-            //AUDIO FOR MATCH
+            secondFlip.resetFlipCount();
         }
     };
 
@@ -119,9 +119,9 @@ public class CardLayoutAdapterWords extends BaseAdapter {
                     word2 = choice.getWord();
                     secondFlip = flipCard;
                     if (word1.getWord().equals(word2.getWord())){
-                        flipCard.resetFlipCount();
                         System.out.println("IT'S A MATCH!");
-                        v.postDelayed(s, 1000);
+                        v.postDelayed(s, 500);
+                        flipCard.resetFlipCount();
                     } else {
                         System.out.println("Not a match!");
                         v.postDelayed(r, 1000);

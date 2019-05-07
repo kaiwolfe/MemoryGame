@@ -36,6 +36,7 @@ public class CardLayoutAdapterMath extends BaseAdapter {
             Gameplay.compareMatchedToNumPairs();
             firstFlip.setVisibility(View.INVISIBLE);
             secondFlip.setVisibility(View.INVISIBLE);
+            secondFlip.resetFlipCount();
             //AUDIO FOR MATCH
         }
     };
@@ -119,9 +120,8 @@ public class CardLayoutAdapterMath extends BaseAdapter {
                     eq2 = choice.getEquation();
                     secondFlip = flipCard;
                     if (eq1.getEquation().equals(eq2.getEquation())){
-                        flipCard.resetFlipCount();
                         System.out.println("IT'S A MATCH!");
-                        v.postDelayed(s, 1000);
+                        v.postDelayed(s, 500);
                     } else {
                         System.out.println("Not a match!");
                         v.postDelayed(r, 1000);

@@ -513,21 +513,22 @@ class Category {
     }
 
     public void populateAdditionCards(int numOfPairs) {
+        additionCardSet = new ArrayList<>();
         ArrayList<Card> easyAdditionCards = new ArrayList<>();
         ArrayList<Card> normalAdditionCards = new ArrayList<>();
         ArrayList<Card> hardAdditionCards = new ArrayList<>();
 
         equationList = makeEquations("easy", "addition", numOfPairs);
         for (int i = 0; i < equationList.size(); i++) {
-            easyAdditionCards.add(new Card(cardBack, cardBlank, equationList.get(i), true));
+            easyAdditionCards.add(new Card(cardBlank, cardBack, equationList.get(i), true));
         }
         equationList = makeEquations("medium", "addition", numOfPairs);
         for (int i = 0; i < equationList.size(); i++) {
-            normalAdditionCards.add(new Card(cardBack, cardBlank, equationList.get(i), true));
+            normalAdditionCards.add(new Card(cardBlank, cardBack, equationList.get(i), true));
         }
         equationList = makeEquations("hard", "addition", numOfPairs);
         for (int i = 0; i < equationList.size(); i++) {
-            hardAdditionCards.add(new Card(cardBack, cardBlank, equationList.get(i), true));
+            hardAdditionCards.add(new Card(cardBlank, cardBack, equationList.get(i), true));
         }
 
         additionCardSet.add(easyAdditionCards);
@@ -536,21 +537,22 @@ class Category {
     }
 
     public void populateSubtractionCards(int numOfPairs) {
+        subtractionCardSet = new ArrayList<>();
         ArrayList<Card> easySubtractionCards = new ArrayList<>();
         ArrayList<Card> normalSubtractionCards = new ArrayList<>();
         ArrayList<Card> hardSubtractionCards = new ArrayList<>();
 
         equationList = makeEquations("easy", "subtraction", numOfPairs);
         for (int i = 0; i < equationList.size(); i++) {
-            easySubtractionCards.add(new Card(cardBack, cardBlank, equationList.get(i), true));
+            easySubtractionCards.add(new Card(cardBlank, cardBack, equationList.get(i), true));
         }
         equationList = makeEquations("medium", "subtraction", numOfPairs);
         for (int i = 0; i < equationList.size(); i++) {
-            normalSubtractionCards.add(new Card(cardBack, cardBlank, equationList.get(i), true));
+            normalSubtractionCards.add(new Card(cardBlank, cardBack, equationList.get(i), true));
         }
         equationList = makeEquations("hard", "subtraction", numOfPairs);
         for (int i = 0; i < equationList.size(); i++) {
-            hardSubtractionCards.add(new Card(cardBack, cardBlank, equationList.get(i), true));
+            hardSubtractionCards.add(new Card(cardBlank, cardBack, equationList.get(i), true));
         }
 
         subtractionCardSet.add(easySubtractionCards);
@@ -559,21 +561,22 @@ class Category {
     }
 
     public void populateRandomCards(int numOfPairs) {
+        randomCardSet = new ArrayList<>();
         ArrayList<Card> easyRandomCards = new ArrayList<>();
         ArrayList<Card> normalRandomCards = new ArrayList<>();
         ArrayList<Card> hardRandomCards = new ArrayList<>();
 
         equationList = makeEquations("easy", "subtraction", numOfPairs);
         for (int i = 0; i < equationList.size(); i++) {
-            easyRandomCards.add(new Card(cardBack, cardBlank, equationList.get(i), true));
+            easyRandomCards.add(new Card(cardBlank, cardBack, equationList.get(i), true));
         }
         equationList = makeEquations("medium", "subtraction", numOfPairs);
         for (int i = 0; i < equationList.size(); i++) {
-            normalRandomCards.add(new Card(cardBack, cardBlank, equationList.get(i), true));
+            normalRandomCards.add(new Card(cardBlank, cardBack, equationList.get(i), true));
         }
         equationList = makeEquations("hard", "subtraction", numOfPairs);
         for (int i = 0; i < equationList.size(); i++) {
-            hardRandomCards.add(new Card(cardBack, cardBlank, equationList.get(i), true));
+            hardRandomCards.add(new Card(cardBlank, cardBack, equationList.get(i), true));
         }
         randomCardSet.add(easyRandomCards);
         randomCardSet.add(normalRandomCards);

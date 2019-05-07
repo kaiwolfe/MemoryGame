@@ -264,7 +264,7 @@ public class Gameplay extends AppCompatActivity {
                     gridView.invalidate();
                     gridView.setAdapter(wordCardAdapter);
                     break;
-                case "equation":
+                case "math":
                     mathCardAdapter.updateItems(cards);
                     gridView.invalidateViews();
                     gridView.invalidate();
