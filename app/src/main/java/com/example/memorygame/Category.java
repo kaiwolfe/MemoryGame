@@ -442,6 +442,9 @@ class Category {
 
     private void populateWordCards(Context c) throws IOException {
         wordCardSet = new ArrayList<>();
+        easyWordList.clear();
+        normalWordList.clear();
+        hardWordList.clear();
         ArrayList<Card> easyWordCards = new ArrayList<>();
         ArrayList<Card> normalWordCards = new ArrayList<>();
         ArrayList<Card> hardWordCards = new ArrayList<>();

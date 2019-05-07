@@ -26,15 +26,20 @@ public class CardLayoutAdapter extends BaseAdapter {
         public void run() {
             firstFlip.flipTheCardBack();
             secondFlip.flipTheCardBack();
-            secondFlip.resetFlipCount();
         }
     };
+
     Runnable s = new Runnable() {
         public void run() {
             Gameplay.addPair();
             Gameplay.compareMatchedToNumPairs();
             firstFlip.setVisibility(View.INVISIBLE);
             secondFlip.setVisibility(View.INVISIBLE);
+
+        }
+    };
+    Runnable t = new Runnable() {
+        public void run() {
             secondFlip.resetFlipCount();
         }
     };
@@ -113,9 +118,10 @@ public class CardLayoutAdapter extends BaseAdapter {
                     if (image1 == image2){
                         System.out.println("IT'S A MATCH!");
                         v.postDelayed(s, 500);
+                        v.postDelayed(t, 500);
                     } else {
                         System.out.println("Not a match!");
-                        v.postDelayed(r, 1000);
+                        v.postDelayed(r, 1250);
                     }
                 } else {
                     return;

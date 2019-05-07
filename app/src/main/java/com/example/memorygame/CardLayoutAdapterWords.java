@@ -26,7 +26,6 @@ public class CardLayoutAdapterWords extends BaseAdapter {
         public void run() {
             firstFlip.flipTheCardBack();
             secondFlip.flipTheCardBack();
-            secondFlip.resetFlipCount();
         }
     };
 
@@ -36,6 +35,11 @@ public class CardLayoutAdapterWords extends BaseAdapter {
             Gameplay.compareMatchedToNumPairs();
             firstFlip.setVisibility(View.INVISIBLE);
             secondFlip.setVisibility(View.INVISIBLE);
+
+        }
+    };
+    Runnable t = new Runnable() {
+        public void run() {
             secondFlip.resetFlipCount();
         }
     };
@@ -121,9 +125,11 @@ public class CardLayoutAdapterWords extends BaseAdapter {
                     if (word1.getWord().equals(word2.getWord())){
                         System.out.println("IT'S A MATCH!");
                         v.postDelayed(s, 500);
+                        v.postDelayed(t, 500);
                     } else {
                         System.out.println("Not a match!");
-                        v.postDelayed(r, 1000);
+                        v.postDelayed(r, 1250);
+
                     }
                 } else {
                     return;
