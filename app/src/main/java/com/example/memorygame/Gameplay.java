@@ -24,6 +24,7 @@ public class Gameplay extends AppCompatActivity {
 
     //Variables for game settings
     static String category;
+    static String langCode;
     static String difficulty;
     static int round;
     static int matchedPairs;
@@ -49,6 +50,8 @@ public class Gameplay extends AppCompatActivity {
     static GridView gridView;
     static ArrayList<Card> cards;
     CardLayoutAdapter cardAdapter;
+    CardLayoutAdapterWords wordCardAdapter;
+    String type;
 
 
     @Override
@@ -178,12 +181,15 @@ public class Gameplay extends AppCompatActivity {
         switch (category) {
             case "animals":
                 cards = categories.getAnimalCards(numCardPairs, difficulty);
+                type = "image";
                 break;
             case "food":
                 cards = categories.getFoodCards(numCardPairs, difficulty);
+                type = "image";
                 break;
             case "nature":
                 cards = categories.getNatureCards(numCardPairs, difficulty);
+                type = "image";
                 break;
             case "addition":
                 //grab respective set of cards
@@ -199,27 +205,60 @@ public class Gameplay extends AppCompatActivity {
                 break;
             case "japanese":
                 //grab respective set of cards
-
+                cards = categories.getWordCards(numCardPairs, difficulty);
+                langCode = "jap";
+                type = "word";
                 break;
             case "german":
                 //grab respective set of cards
-
+                cards = categories.getWordCards(numCardPairs, difficulty);
+                langCode = "ger";
+                type = "word";
                 break;
             case "spanish":
                 //grab respective set of cards
-
+                cards = categories.getWordCards(numCardPairs, difficulty);
+                langCode = "spa";
+                type = "word";
                 break;
         }
         if(firstRound) {
-            cardAdapter = new CardLayoutAdapter(this, cards);
-            gridView.setAdapter(cardAdapter);
+            switch(type){
+                case "image":
+                    cardAdapter = new CardLayoutAdapter(this, cards);
+                    gridView.setAdapter(cardAdapter);
+                    break;
+                case "word":
+                    wordCardAdapter = new CardLayoutAdapterWords(this, cards);
+                    gridView.setAdapter(wordCardAdapter);
+                    break;
+                case "equation":
 
-        }else{
-            cardAdapter.updateItems(cards);
-            gridView.invalidateViews();
-            gridView.invalidate();
-            gridView.setAdapter(cardAdapter);
+                    break;
+                }
+        }else {
+            switch(type){
+                case "image":
+                    cardAdapter.updateItems(cards);
+                    gridView.invalidateViews();
+                    gridView.invalidate();
+                    gridView.setAdapter(cardAdapter);
+                    break;
+                case "word":
+                    wordCardAdapter.updateItems(cards);
+                    gridView.invalidateViews();
+                    gridView.invalidate();
+                    gridView.setAdapter(wordCardAdapter);
+                    break;
+                case "equation":
+
+                    break;
+            }
         }
+    }
+
+    public static String getLanguage(){
+        return langCode;
     }
 
     public void selectCard(View view) {

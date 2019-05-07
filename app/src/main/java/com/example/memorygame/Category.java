@@ -7,6 +7,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
@@ -21,6 +26,10 @@ class Category {
     private ArrayList<ArrayList<Card>> animalCardSet;
     private ArrayList<ArrayList<Card>> foodCardSet;
     private ArrayList<ArrayList<Card>> natureCardSet;
+    private ArrayList<ArrayList<Card>> wordCardSet;
+
+    ArrayList<Word> wordList = new ArrayList<Word>();
+
 
 
     public Category(int cardBack, int cardBlank){
@@ -94,6 +103,23 @@ class Category {
         return natureCards;
     }
 
+    public ArrayList<Card> getWordCards(int numSets, String difficulty) throws IOException {
+        ArrayList<Card> wordCards = null;
+        populateWordCards();
+        switch (difficulty) {
+            case "easy":
+                wordCards = randomSubset(wordCardSet.get(0), numSets);
+                break;
+            case "medium":
+                wordCards = randomSubset(wordCardSet.get(1), numSets);
+                break;
+            case "hard":
+                wordCards = randomSubset(wordCardSet.get(2), numSets);
+                break;
+        }
+        return wordCards;
+    }
+
     private ArrayList<Card> randomSubset(ArrayList<Card> arrayList, int numSets) {
         ArrayList<Card> pullFrom = arrayList;
         ArrayList<Card> subset = new ArrayList<>();
@@ -103,8 +129,11 @@ class Category {
 //            Log.d("RANDOM SUBSET: ", "Random integer = " + random);
 //            Log.d("RANDOM SUBSET: ", "Array size = " + pullFrom.size());
             Card randomCard = pullFrom.get(random);
+            //Add the English destined word
             subset.add(randomCard);
 //            Log.d("RANDOM SUBSET: ", "Subset size = " + subset.size());
+            //Add the destined translated word
+            randomCard.setEnglish(false);
             subset.add(randomCard);
 //            Log.d("RANDOM SUBSET: ", "Subset size = " + subset.size());
             pullFrom.remove(random);
@@ -136,6 +165,8 @@ class Category {
 
         return mixedSubset;
     }
+
+
 
     public ArrayList<Card> getCardTextures(){
         cardTextures = new ArrayList<>();
@@ -352,5 +383,43 @@ class Category {
         natureCardSet.add(easyNatureCards);
         natureCardSet.add(normalNatureCards);
         natureCardSet.add(hardNatureCards);
+    }
+
+    private void populateWordCards() throws IOException {
+        String difficulty = "easy";
+        String fileName = difficulty + ".txt";
+        File file = new File(fileName);
+        FileReader reader = new FileReader(file);
+        BufferedReader buffer = new BufferedReader(reader);
+        String line;
+
+        //Loop to read through file line by line
+        while((line = buffer.readLine()) != null){
+            //Split line of text into parts and put into array
+            String[] words = line.split("\t");
+
+            //Use array of words to create a new word object and add it to the list
+            wordList.add(new Word(words[0], words[1], words[2], words[3]));
+        }
+        buffer.close();
+
+        wordCardSet = new ArrayList<>();
+        ArrayList<Card> easyWordCards = new ArrayList<>();
+        ArrayList<Card> normaWordCards = new ArrayList<>();
+        ArrayList<Card> hardWordCards = new ArrayList<>();
+
+        for (int i = 0; i < wordList.size(); i++){
+            easyWordCards.add(new Card(cardBlank, cardBack, wordList.get(i), true));
+        }
+        for (int i = 0; i < wordList.size(); i++){
+            normaWordCards.add(new Card(cardBlank, cardBack, wordList.get(i), true));
+        }
+        for (int i = 0; i < wordList.size(); i++){
+            hardWordCards.add(new Card(cardBlank, cardBack, wordList.get(i), true));
+        }
+
+        wordCardSet.add(easyWordCards);
+        wordCardSet.add(normaWordCards);
+        wordCardSet.add(hardWordCards);
     }
 }

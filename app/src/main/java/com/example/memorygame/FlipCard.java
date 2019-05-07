@@ -9,6 +9,7 @@ import android.provider.MediaStore;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class FlipCard extends RelativeLayout {
     private Context context;
@@ -17,6 +18,7 @@ public class FlipCard extends RelativeLayout {
     private boolean mIsBackVisible = false;
     private ImageView cardFront;
     private ImageView cardBack;
+    private TextView cardText;
     private static int flipCount = 0;
     static boolean sfxOn = true;
 
@@ -61,6 +63,7 @@ public class FlipCard extends RelativeLayout {
     private void findViews() {
         this.cardBack = (ImageView)findViewById(R.id.cardImageBack);
         this.cardFront = (ImageView)findViewById(R.id.cardImageFront);
+        this.cardText = (TextView)findViewById(R.id.cardText);
     }
 
     public void flipTheCard() {
@@ -72,12 +75,14 @@ public class FlipCard extends RelativeLayout {
         //r.run();
         if (!mIsBackVisible) {
             mSetRightOut.setTarget(cardFront);
+            mSetRightOut.setTarget(cardText);
             mSetLeftIn.setTarget(cardBack);
             mSetRightOut.start();
             mSetLeftIn.start();
             mIsBackVisible = true;
         } else {
             mSetRightOut.setTarget(cardBack);
+            mSetLeftIn.setTarget(cardFront);
             mSetLeftIn.setTarget(cardFront);
             mSetRightOut.start();
             mSetLeftIn.start();

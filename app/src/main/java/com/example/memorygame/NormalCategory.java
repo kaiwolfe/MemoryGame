@@ -27,9 +27,6 @@ public class NormalCategory extends AppCompatActivity implements GestureDetector
 
     GestureDetector gestureDetector;
 
-    //Variable for sound player
-    MediaPlayer buttonSound;
-
     //Variables for radio buttons
     RadioButton easy;
     RadioButton medium;
@@ -39,10 +36,6 @@ public class NormalCategory extends AppCompatActivity implements GestureDetector
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_normal_category);
-
-
-        //Assign specific sounds to each media player
-        buttonSound = MediaPlayer.create(this, R.raw.button);
 
         //Set radio button references
         easy = findViewById(R.id.radio_easy);
@@ -107,7 +100,7 @@ public class NormalCategory extends AppCompatActivity implements GestureDetector
     //Activates when "Back" button is pressed, takes user to 'Game Mode' screen
     public void endActivity(View view) {
         //Play sound
-        buttonSound.start();
+        AudioPlay.playButtonSFX(sfxOn);
 
         //Ends activity
         finish();
@@ -116,7 +109,7 @@ public class NormalCategory extends AppCompatActivity implements GestureDetector
     //Activates when a category button is pressed, takes user to 'Gameplay' screen
     public void launchGameplay(View view) {
         //Play sound
-        buttonSound.start();
+        AudioPlay.playButtonSFX(sfxOn);
 
         //Get text of the button pressed
         Button btn = (Button) view;
@@ -134,32 +127,12 @@ public class NormalCategory extends AppCompatActivity implements GestureDetector
         this.finish();
     }
 
-    //Sets the sfx image button and sound volume based on value
-    public void setSound(boolean on) {
-        if (on)
-            buttonSound.setVolume(1, 1);
-        else
-            buttonSound.setVolume(0, 0);
-    }
-
-    //Sets the music image button and music volume based on value
-    public void setMusic(boolean on) {
-        if (on) {
-            //Add code here to turn music on
-        } else {
-            //Add code here to turn music off
-        }
-    }
-
     private void getSettings() {
         SharedPreferences settings = getSharedPreferences("Settings", 0);
         musicOn = settings.getBoolean("musicOn", true);
         sfxOn = settings.getBoolean("sfxOn", true);
         difficulty = settings.getString("difficulty","medium");
 
-        //Toggle music/sound based on settings
-        setMusic(musicOn);
-        setSound(sfxOn);
     }
 
     @Override
