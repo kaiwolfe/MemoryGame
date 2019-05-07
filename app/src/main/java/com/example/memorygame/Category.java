@@ -22,7 +22,11 @@ class Category {
     private ArrayList<ArrayList<Card>> foodCardSet;
     private ArrayList<ArrayList<Card>> natureCardSet;
     private ArrayList<ArrayList<Card>> wordCardSet;
-    private ArrayList<ArrayList<Card>> mathCardSets;
+    private ArrayList<ArrayList<Card>> additionCardSet;
+    private ArrayList<ArrayList<Card>> subtractionCardSet;
+    private ArrayList<ArrayList<Card>> randomCardSet;
+
+
 
     ArrayList<Word> easyWordList = new ArrayList<Word>();
     ArrayList<Word> normalWordList = new ArrayList<Word>();
@@ -119,6 +123,58 @@ class Category {
         return wordCards;
     }
 
+    public ArrayList<Card> getAdditionCards(int numOfPairs, String difficulty){
+        ArrayList<Card> mathCards = null;
+        populateAdditionCards(numOfPairs);
+        switch (difficulty) {
+            case "easy":
+                mathCards = randomSubset(additionCardSet.get(0), numOfPairs);
+                break;
+            case "medium":
+                mathCards = randomSubset(additionCardSet.get(1), numOfPairs);
+                break;
+            case "hard":
+                mathCards = randomSubset(additionCardSet.get(2), numOfPairs);
+                break;
+        }
+        return mathCards;
+    }
+
+    public ArrayList<Card> getSubtracitonCards (int numOfPairs, String difficulty){
+        ArrayList<Card> mathCards = null;
+        populateSubtractionCards(numOfPairs);
+        switch (difficulty) {
+            case "easy":
+                mathCards = randomSubset(subtractionCardSet.get(0), numOfPairs);
+                break;
+            case "medium":
+                mathCards = randomSubset(subtractionCardSet.get(1), numOfPairs);
+                break;
+            case "hard":
+                mathCards = randomSubset(subtractionCardSet.get(2), numOfPairs);
+                break;
+        }
+        return mathCards;
+    }
+
+    public ArrayList<Card> getRandomCards (int numOfPairs, String difficulty){
+        ArrayList<Card> mathCards = null;
+        populateRandomCards(numOfPairs);
+        switch (difficulty) {
+            case "easy":
+                mathCards = randomSubset(randomCardSet.get(0), numOfPairs);
+                break;
+            case "medium":
+                mathCards = randomSubset(randomCardSet.get(1), numOfPairs);
+                break;
+            case "hard":
+                mathCards = randomSubset(randomCardSet.get(2), numOfPairs);
+                break;
+        }
+        return mathCards;
+    }
+
+
     private ArrayList<Card> randomSubset(ArrayList<Card> arrayList, int numSets) {
         ArrayList<Card> pullFrom = arrayList;
         ArrayList<Card> subset = new ArrayList<>();
@@ -133,7 +189,8 @@ class Category {
 //            Log.d("RANDOM SUBSET: ", "Subset size = " + subset.size());
             //Add the destined translated word
             Word word = randomCard.getWord();
-            Card langCard = new Card(randomCard.getBackImage(), randomCard.getFrontImage(), word, false);
+            Equation eq = randomCard.getEquation();
+            Card langCard = new Card(randomCard.getBackImage(), randomCard.getFrontImage(), word, eq, false);
             subset.add(langCard);
 //            Log.d("RANDOM SUBSET: ", "Subset size = " + subset.size());
             pullFrom.remove(random);
@@ -472,6 +529,10 @@ class Category {
         for (int i = 0; i < equationList.size(); i++) {
             hardAdditionCards.add(new Card(cardBack, cardBlank, equationList.get(i), true));
         }
+
+        additionCardSet.add(easyAdditionCards);
+        additionCardSet.add(normalAdditionCards);
+        additionCardSet.add(hardAdditionCards);
     }
 
     public void populateSubtractionCards(int numOfPairs) {
@@ -491,6 +552,10 @@ class Category {
         for (int i = 0; i < equationList.size(); i++) {
             hardSubtractionCards.add(new Card(cardBack, cardBlank, equationList.get(i), true));
         }
+
+        subtractionCardSet.add(easySubtractionCards);
+        subtractionCardSet.add(normalSubtractionCards);
+        subtractionCardSet.add(hardSubtractionCards);
     }
 
     public void populateRandomCards(int numOfPairs) {
@@ -510,10 +575,13 @@ class Category {
         for (int i = 0; i < equationList.size(); i++) {
             hardRandomCards.add(new Card(cardBack, cardBlank, equationList.get(i), true));
         }
+        randomCardSet.add(easyRandomCards);
+        randomCardSet.add(normalRandomCards);
+        randomCardSet.add(hardRandomCards);
     }
 
     public ArrayList<Equation> makeEquations(String difficulty, String category, int numOfPairs) {
-        ArrayList<Equation> equationList = new ArrayList<>();
+        ArrayList<Equation> equations = new ArrayList<>();
         Random rand = new Random();
         int[] answers = new int[numOfPairs];
 
@@ -560,11 +628,11 @@ class Category {
             //If the answer isn't already on a card, add the equation and answer to the arrays
             if (!isTaken) {
                 System.out.println("Equation is unique!");
-                equationList.add(equation);
+                equations.add(equation);
                 answers[counter] = equation.getAnswerAsInt();
                 counter--;
             }
         }
-        return equationList;
+        return equations;
     }
 }

@@ -52,6 +52,7 @@ public class Gameplay extends AppCompatActivity {
     static ArrayList<Card> cards;
     CardLayoutAdapter cardAdapter;
     CardLayoutAdapterWords wordCardAdapter;
+    CardLayoutAdapterMath mathCardAdapter;
     String type;
 
 
@@ -202,15 +203,18 @@ public class Gameplay extends AppCompatActivity {
                 break;
             case "addition":
                 //grab respective set of cards
-
+                cards = categories.getAdditionCards(numCardPairs, difficulty);
+                type = "math";
                 break;
             case "subtraction":
                 //grab respective set of cards
-
+                cards = categories.getSubtracitonCards(numCardPairs, difficulty);
+                type = "math";
                 break;
             case "random":
                 //grab respective set of cards
-
+                cards = categories.getRandomCards(numCardPairs, difficulty);
+                type = "image";
                 break;
             case "japanese":
                 //grab respective set of cards
@@ -241,8 +245,9 @@ public class Gameplay extends AppCompatActivity {
                     wordCardAdapter = new CardLayoutAdapterWords(this, cards);
                     gridView.setAdapter(wordCardAdapter);
                     break;
-                case "equation":
-
+                case "math":
+                    mathCardAdapter = new CardLayoutAdapterMath(this, cards);
+                    gridView.setAdapter(mathCardAdapter);
                     break;
                 }
         }else {
@@ -260,7 +265,10 @@ public class Gameplay extends AppCompatActivity {
                     gridView.setAdapter(wordCardAdapter);
                     break;
                 case "equation":
-
+                    mathCardAdapter.updateItems(cards);
+                    gridView.invalidateViews();
+                    gridView.invalidate();
+                    gridView.setAdapter(mathCardAdapter);
                     break;
             }
         }
