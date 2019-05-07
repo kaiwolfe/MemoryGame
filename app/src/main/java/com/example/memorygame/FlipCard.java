@@ -15,6 +15,8 @@ public class FlipCard extends RelativeLayout {
     private Context context;
     private AnimatorSet mSetRightOut;
     private AnimatorSet mSetLeftIn;
+    private AnimatorSet mSetRightOutText;
+    private AnimatorSet mSetLeftInText;
     private boolean mIsBackVisible = false;
     private ImageView cardFront;
     private ImageView cardBack;
@@ -58,6 +60,8 @@ public class FlipCard extends RelativeLayout {
     private void loadAnimations() {
         mSetRightOut = (AnimatorSet) AnimatorInflater.loadAnimator(this.context, R.animator.out_animation);
         mSetLeftIn = (AnimatorSet) AnimatorInflater.loadAnimator(this.context, R.animator.in_animation);
+        mSetRightOutText = (AnimatorSet) AnimatorInflater.loadAnimator(this.context, R.animator.out_animation);
+        mSetLeftInText = (AnimatorSet) AnimatorInflater.loadAnimator(this.context, R.animator.in_animation);
     }
 
     private void findViews() {
@@ -75,17 +79,19 @@ public class FlipCard extends RelativeLayout {
         //r.run();
         if (!mIsBackVisible) {
             mSetRightOut.setTarget(cardFront);
-            mSetRightOut.setTarget(cardText);
+            mSetLeftInText.setTarget(cardText);
             mSetLeftIn.setTarget(cardBack);
             mSetRightOut.start();
             mSetLeftIn.start();
+            mSetLeftInText.start();
             mIsBackVisible = true;
         } else {
             mSetRightOut.setTarget(cardBack);
             mSetLeftIn.setTarget(cardFront);
-            mSetLeftIn.setTarget(cardFront);
+            mSetRightOutText.setTarget(cardText);
             mSetRightOut.start();
             mSetLeftIn.start();
+            mSetRightOutText.start();
             mIsBackVisible = false;
         }
     }
@@ -97,15 +103,19 @@ public class FlipCard extends RelativeLayout {
         AudioPlay.playFlipDownSFX(sfxOn);
         if (!mIsBackVisible) {
             mSetRightOut.setTarget(cardFront);
+            mSetLeftInText.setTarget(cardText);
             mSetLeftIn.setTarget(cardBack);
             mSetRightOut.start();
             mSetLeftIn.start();
+            mSetLeftInText.start();
             mIsBackVisible = true;
         } else {
             mSetRightOut.setTarget(cardBack);
             mSetLeftIn.setTarget(cardFront);
+            mSetRightOutText.setTarget(cardText);
             mSetRightOut.start();
             mSetLeftIn.start();
+            mSetRightOutText.start();
             mIsBackVisible = false;
         }
     }

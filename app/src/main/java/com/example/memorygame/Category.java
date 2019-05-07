@@ -1,5 +1,8 @@
 package com.example.memorygame;
 
+import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
 import android.graphics.drawable.Drawable;
 import android.os.Debug;
 import android.util.Log;
@@ -12,6 +15,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
@@ -28,7 +33,9 @@ class Category {
     private ArrayList<ArrayList<Card>> natureCardSet;
     private ArrayList<ArrayList<Card>> wordCardSet;
 
-    ArrayList<Word> wordList = new ArrayList<Word>();
+    ArrayList<Word> easyWordList = new ArrayList<Word>();
+    ArrayList<Word> normalWordList = new ArrayList<Word>();
+    ArrayList<Word> hardWordList = new ArrayList<Word>();
 
 
 
@@ -103,9 +110,9 @@ class Category {
         return natureCards;
     }
 
-    public ArrayList<Card> getWordCards(int numSets, String difficulty) throws IOException {
+    public ArrayList<Card> getWordCards(Context c, int numSets, String difficulty) throws IOException {
         ArrayList<Card> wordCards = null;
-        populateWordCards();
+        populateWordCards(c);
         switch (difficulty) {
             case "easy":
                 wordCards = randomSubset(wordCardSet.get(0), numSets);
@@ -133,8 +140,9 @@ class Category {
             subset.add(randomCard);
 //            Log.d("RANDOM SUBSET: ", "Subset size = " + subset.size());
             //Add the destined translated word
-            randomCard.setEnglish(false);
-            subset.add(randomCard);
+            Word word = randomCard.getWord();
+            Card langCard = new Card(randomCard.getBackImage(), randomCard.getFrontImage(), word, false);
+            subset.add(langCard);
 //            Log.d("RANDOM SUBSET: ", "Subset size = " + subset.size());
             pullFrom.remove(random);
 //            Log.d("RANDOM SUBSET: ", "New array size = " + pullFrom.size());
@@ -385,12 +393,17 @@ class Category {
         natureCardSet.add(hardNatureCards);
     }
 
-    private void populateWordCards() throws IOException {
+    private void populateWordCards(Context c) throws IOException {
+        wordCardSet = new ArrayList<>();
+        ArrayList<Card> easyWordCards = new ArrayList<>();
+        ArrayList<Card> normalWordCards = new ArrayList<>();
+        ArrayList<Card> hardWordCards = new ArrayList<>();
+
         String difficulty = "easy";
         String fileName = difficulty + ".txt";
-        File file = new File(fileName);
-        FileReader reader = new FileReader(file);
-        BufferedReader buffer = new BufferedReader(reader);
+        AssetManager am = c.getAssets();
+        InputStream is = am.open(fileName);
+        BufferedReader buffer = new BufferedReader(new InputStreamReader(is));
         String line;
 
         //Loop to read through file line by line
@@ -399,27 +412,55 @@ class Category {
             String[] words = line.split("\t");
 
             //Use array of words to create a new word object and add it to the list
-            wordList.add(new Word(words[0], words[1], words[2], words[3]));
+            easyWordList.add(new Word(words[0], words[1], words[2], words[3]));
         }
         buffer.close();
 
-        wordCardSet = new ArrayList<>();
-        ArrayList<Card> easyWordCards = new ArrayList<>();
-        ArrayList<Card> normaWordCards = new ArrayList<>();
-        ArrayList<Card> hardWordCards = new ArrayList<>();
+        for (int i = 0; i < easyWordList.size(); i++){
+            easyWordCards.add(new Card(cardBlank, cardBack, easyWordList.get(i), true));
+        }
 
-        for (int i = 0; i < wordList.size(); i++){
-            easyWordCards.add(new Card(cardBlank, cardBack, wordList.get(i), true));
+        difficulty = "medium";
+        fileName = difficulty + ".txt";
+        am = c.getAssets();
+        is = am.open(fileName);
+        buffer = new BufferedReader(new InputStreamReader(is));
+
+        //Loop to read through file line by line
+        while((line = buffer.readLine()) != null){
+            //Split line of text into parts and put into array
+            String[] words = line.split("\t");
+
+            //Use array of words to create a new word object and add it to the list
+            normalWordList.add(new Word(words[0], words[1], words[2], words[3]));
         }
-        for (int i = 0; i < wordList.size(); i++){
-            normaWordCards.add(new Card(cardBlank, cardBack, wordList.get(i), true));
+        buffer.close();
+
+        for (int i = 0; i < normalWordList.size(); i++){
+            normalWordCards.add(new Card(cardBlank, cardBack, normalWordList.get(i), true));
         }
-        for (int i = 0; i < wordList.size(); i++){
-            hardWordCards.add(new Card(cardBlank, cardBack, wordList.get(i), true));
+
+        difficulty = "hard";
+        fileName = difficulty + ".txt";
+        am = c.getAssets();
+        is = am.open(fileName);
+        buffer = new BufferedReader(new InputStreamReader(is));
+
+        //Loop to read through file line by line
+        while((line = buffer.readLine()) != null){
+            //Split line of text into parts and put into array
+            String[] words = line.split("\t");
+
+            //Use array of words to create a new word object and add it to the list
+            hardWordList.add(new Word(words[0], words[1], words[2], words[3]));
+        }
+        buffer.close();
+        for (int i = 0; i < hardWordList.size(); i++){
+            hardWordCards.add(new Card(cardBlank, cardBack, hardWordList.get(i), true));
         }
 
         wordCardSet.add(easyWordCards);
-        wordCardSet.add(normaWordCards);
+        wordCardSet.add(normalWordCards);
         wordCardSet.add(hardWordCards);
     }
 }

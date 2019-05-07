@@ -5,5 +5,15 @@
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints"
         xmlns:tools="http://schemas.android.com/tools" />
+
+    <TextView
+        android:id="@+id/cardText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:textSize="24sp"
+        android:textAlignment="center"
+        />
 </com.example.memorygame.FlipCard>
 

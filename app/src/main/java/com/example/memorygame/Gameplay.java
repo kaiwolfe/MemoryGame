@@ -214,19 +214,19 @@ public class Gameplay extends AppCompatActivity {
                 break;
             case "japanese":
                 //grab respective set of cards
-                cards = categories.getWordCards(numCardPairs, difficulty);
+                cards = categories.getWordCards(this, numCardPairs, difficulty);
                 langCode = "jap";
                 type = "word";
                 break;
             case "german":
                 //grab respective set of cards
-                cards = categories.getWordCards(numCardPairs, difficulty);
+                cards = categories.getWordCards(this, numCardPairs, difficulty);
                 langCode = "ger";
                 type = "word";
                 break;
             case "spanish":
                 //grab respective set of cards
-                cards = categories.getWordCards(numCardPairs, difficulty);
+                cards = categories.getWordCards(this, numCardPairs, difficulty);
                 langCode = "spa";
                 type = "word";
                 break;
