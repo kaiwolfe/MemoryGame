@@ -125,6 +125,9 @@ public class NormalCategory extends AppCompatActivity implements GestureDetector
         //Pass data to activity
         Intent intent = new Intent(this, Gameplay.class);
         intent.putExtra("category", category);
+        intent.putExtra("difficulty", difficulty);
+        intent.putExtra("score", 0);
+        intent.putExtra("round", 1);
 
         //Start activity
         startActivity(intent);

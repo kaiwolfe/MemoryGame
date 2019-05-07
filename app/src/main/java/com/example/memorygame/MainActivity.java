@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     public void launchGameModeSelection(View view){
         //Play sound
         AudioPlay.playButtonSFX(sfxOn);
+
         //Create GameMode Activity
         Intent intent = new Intent(this, GameMode.class);
 

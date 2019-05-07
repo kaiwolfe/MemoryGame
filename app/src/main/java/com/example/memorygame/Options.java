@@ -48,13 +48,13 @@ public class Options extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_options);
+
         //Find the on/off image buttons
         musicBtn = (ImageView) findViewById(R.id.button_music);
         sfxBtn = (ImageView) findViewById(R.id.button_sfx);
 
         //Get the sound options passed from settings preferences.
         getSettings();
-
 
         //Create gridview of textures
         gridView = (GridView) findViewById(R.id.gridView_cardTextures);
