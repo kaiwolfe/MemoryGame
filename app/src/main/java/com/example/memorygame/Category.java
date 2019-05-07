@@ -14,7 +14,6 @@ import java.util.Random;
 class Category {
     static int cardBack;
     static int cardBlank;
-    String text;
 
     private ArrayList<Card> cardTextures;
 
@@ -446,6 +445,7 @@ class Category {
         ArrayList<Card> easyWordCards = new ArrayList<>();
         ArrayList<Card> normalWordCards = new ArrayList<>();
         ArrayList<Card> hardWordCards = new ArrayList<>();
+        String[] words = null;
 
         String difficulty = "easy";
         String fileName = difficulty + ".txt";
@@ -457,7 +457,7 @@ class Category {
         //Loop to read through file line by line
         while ((line = buffer.readLine()) != null) {
             //Split line of text into parts and put into array
-            String[] words = line.split("\t");
+            words = line.split("\t");
 
             //Use array of words to create a new word object and add it to the list
             easyWordList.add(new Word(words[0], words[1], words[2], words[3]));
@@ -477,7 +477,7 @@ class Category {
         //Loop to read through file line by line
         while ((line = buffer.readLine()) != null) {
             //Split line of text into parts and put into array
-            String[] words = line.split("\t");
+            words = line.split("\t");
 
             //Use array of words to create a new word object and add it to the list
             normalWordList.add(new Word(words[0], words[1], words[2], words[3]));
@@ -497,7 +497,7 @@ class Category {
         //Loop to read through file line by line
         while ((line = buffer.readLine()) != null) {
             //Split line of text into parts and put into array
-            String[] words = line.split("\t");
+            words = line.split("\t");
 
             //Use array of words to create a new word object and add it to the list
             hardWordList.add(new Word(words[0], words[1], words[2], words[3]));
