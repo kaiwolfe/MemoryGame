@@ -36,7 +36,7 @@ public class CardLayoutAdapter extends BaseAdapter {
             firstFlip.setVisibility(View.INVISIBLE);
             secondFlip.setVisibility(View.INVISIBLE);
             secondFlip.resetFlipCount();
-            //AUDIO FOR MATCH
+            AudioPlay.playMatchSFX(Gameplay.sfxOn);
         }
     };
 

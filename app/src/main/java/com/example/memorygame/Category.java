@@ -566,15 +566,15 @@ class Category {
         ArrayList<Card> normalRandomCards = new ArrayList<>();
         ArrayList<Card> hardRandomCards = new ArrayList<>();
 
-        equationList = makeEquations("easy", "subtraction", numOfPairs);
+        equationList = makeEquations("easy", "random", numOfPairs);
         for (int i = 0; i < equationList.size(); i++) {
             easyRandomCards.add(new Card(cardBlank, cardBack, equationList.get(i), true));
         }
-        equationList = makeEquations("medium", "subtraction", numOfPairs);
+        equationList = makeEquations("medium", "random", numOfPairs);
         for (int i = 0; i < equationList.size(); i++) {
             normalRandomCards.add(new Card(cardBlank, cardBack, equationList.get(i), true));
         }
-        equationList = makeEquations("hard", "subtraction", numOfPairs);
+        equationList = makeEquations("hard", "random", numOfPairs);
         for (int i = 0; i < equationList.size(); i++) {
             hardRandomCards.add(new Card(cardBlank, cardBack, equationList.get(i), true));
         }

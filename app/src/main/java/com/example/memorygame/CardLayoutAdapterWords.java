@@ -37,6 +37,8 @@ public class CardLayoutAdapterWords extends BaseAdapter {
             firstFlip.setVisibility(View.INVISIBLE);
             secondFlip.setVisibility(View.INVISIBLE);
             secondFlip.resetFlipCount();
+            AudioPlay.playMatchSFX(Gameplay.sfxOn);
+
         }
     };
 

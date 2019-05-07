@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         //Get music, sfx, and texture settings based on last use. Set's default to true if the first time playing.
 
 
-        AudioPlay.createGamePlayAudio(this, R.raw.music_gameplay);
+        AudioPlay.createGamePlayAudio(this, R.raw.music_menu);
         getSettings();
         AudioPlay.startGamePlayAudio(musicOn);
 
@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         AudioPlay.createToggleSFX(this, R.raw.toggle);
         AudioPlay.createFlipUpSFX(this, R.raw.card_up);
         AudioPlay.createFlipDownSFX(this, R.raw.card_down);
+        AudioPlay.createMatchSFX(this, R.raw.matched);
 
         //NEED TO LOOP THE MUSIC OR START ANOTHER RAW FILE UPON COMPLETION.
     }
