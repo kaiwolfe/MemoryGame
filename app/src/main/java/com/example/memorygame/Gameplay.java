@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Gameplay extends AppCompatActivity {
@@ -74,7 +75,11 @@ public class Gameplay extends AppCompatActivity {
         gridView = (GridView) findViewById(R.id.gridView);
         setup();
         categories = new Category(texture, R.drawable.card_blank);
-        generateRound(category, difficulty, colWidth, numOfPairs, true);
+        try {
+            generateRound(category, difficulty, colWidth, numOfPairs, true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void setRoundPairs(){
@@ -113,7 +118,11 @@ public class Gameplay extends AppCompatActivity {
                 timeLeftInMilliseconds = millisUntilFinished;
                 updateTimer();
                 if (allMatched){
-                    nextRound();
+                    try {
+                        nextRound();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     this.cancel();
                     countDownTimer = null;
                 }
@@ -174,7 +183,7 @@ public class Gameplay extends AppCompatActivity {
     }
 
 
-    public void generateRound(String category, String difficulty, int columnSize, int numCardPairs, boolean firstRound) {
+    public void generateRound(String category, String difficulty, int columnSize, int numCardPairs, boolean firstRound) throws IOException {
 
         gridView.setColumnWidth(columnSize);
 
@@ -315,7 +324,7 @@ public class Gameplay extends AppCompatActivity {
         this.finish();
     }
 
-    public void nextRound(){
+    public void nextRound() throws IOException {
         if(round == 3){
             gameWon = true;
             endGame();

@@ -17,8 +17,8 @@ public class CardLayoutAdapterWords extends BaseAdapter {
     private final Context mContext;
     private ArrayList<Card> cards;
 
-    static int image1;
-    static int image2;
+    static Word word1;
+    static Word word2;
     static FlipCard firstFlip;
     static FlipCard secondFlip;
     static int position1;
@@ -99,16 +99,16 @@ public class CardLayoutAdapterWords extends BaseAdapter {
                 System.out.println("Position: " + position);
                 if(flipCard.getFlipCount() == 0){
                     flipCard.flipTheCard();
-                    image1 = choice.getBackImage();
+                    word1 = choice.getWord();
                     firstFlip = flipCard;
                     position1 = position;
                 } else if (flipCard.getFlipCount() == 1){
                     if(position1 == position)
                         return;
                     flipCard.flipTheCard();
-                    image2 = choice.getBackImage();
+                    word2 = choice.getWord();
                     secondFlip = flipCard;
-                    if (image1 == image2){
+                    if (word1.getWord().equals(word2.getWord())){
                         flipCard.resetFlipCount();
                         System.out.println("IT'S A MATCH!");
                         Gameplay.addPair();
