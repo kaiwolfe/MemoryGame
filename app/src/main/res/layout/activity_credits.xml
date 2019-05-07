@@ -116,7 +116,7 @@
         app:layout_constraintTop_toBottomOf="@+id/label_images" />
 
     <TextView
-        android:id="@+id/label_music"
+        android:id="@+id/label_sound"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -124,7 +124,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="Music:"
+        android:text="Sound Effects:"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -142,11 +142,12 @@
         android:text="Kevin MacLeod"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.482"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label_music" />
 
     <TextView
-        android:id="@+id/label_sound"
+        android:id="@+id/label_music"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -154,11 +155,11 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="Sound Effects:"
+        android:text="Music:"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_kevin" />
+        app:layout_constraintTop_toBottomOf="@+id/text_freesound" />
 
     <TextView
         android:id="@+id/text_freesound"

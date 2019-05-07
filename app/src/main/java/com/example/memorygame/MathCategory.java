@@ -2,7 +2,6 @@ package com.example.memorygame;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.GestureDetector;
@@ -10,44 +9,38 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 public class MathCategory extends AppCompatActivity implements GestureDetector.OnGestureListener {
 
     //Variables for game settings
     String category;
-    String difficulty = "medium";
+    String difficulty;
 
     //Variables for sound settings
     boolean musicOn;
     boolean sfxOn;
-
-    //Variable for sound player
-    MediaPlayer buttonSound;
-
-    GestureDetector gestureDetector;
 
     //Variables for radio buttons
     RadioButton easy;
     RadioButton medium;
     RadioButton hard;
 
+    //Variable for detecting gestures
+    GestureDetector gestureDetector;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_math_category);
-
-        //Assign specific sounds to each media player
-        buttonSound = MediaPlayer.create(this, R.raw.button);
-
-        //Set sound/music based on value
-        setSound(sfxOn);
-        setMusic(musicOn);
 
         //Set radio button references
         easy = findViewById(R.id.radio_easy);
         medium = findViewById(R.id.radio_medium);
         hard = findViewById(R.id.radio_hard);
 
+        //Call settings method to get sound/music and difficulty settings
         getSettings();
 
         //Set initial checked button based on selected difficulty
@@ -67,30 +60,26 @@ public class MathCategory extends AppCompatActivity implements GestureDetector.O
             hard.setChecked(true);
         }
 
+        //
+        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radio_group);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                RadioButton rb=(RadioButton)findViewById(checkedId);
+                difficulty = rb.getText().toString().toLowerCase();
+                SharedPreferences settings = getSharedPreferences("Settings", 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("difficulty", difficulty);
+                editor.apply();
+            }
+        });
+
+        //
         gestureDetector = new GestureDetector(this);
-
     }
 
-    public void onRadioButtonClicked(View view) {
-        //Checks if the button pressed is checked
-        boolean checked = ((RadioButton) view).isChecked();
-
-        //Checks which one was pressed, sets difficulty variable
-        switch(view.getId()) {
-            case R.id.radio_easy:
-                if (checked)
-                    difficulty = "easy";
-                break;
-            case R.id.radio_hard:
-                if (checked)
-                    difficulty = "hard";
-                break;
-            case R.id.radio_medium:
-                if(checked)
-                    difficulty = "medium";
-        }
-    }
-
+    //Gets the setting values and sets variables to those values
     private void getSettings() {
         SharedPreferences settings = getSharedPreferences("Settings", 0);
         musicOn = settings.getBoolean("musicOn", true);
@@ -98,39 +87,10 @@ public class MathCategory extends AppCompatActivity implements GestureDetector.O
         difficulty = settings.getString("difficulty","medium");
     }
 
-    //To Normal
-    public void swipeLeft(){
-        //Pass data to activity
-        Intent intent = new Intent(this, NormalCategory.class);
-
-        //Start new activity and finish this one
-        startActivity(intent);
-        finish();
-    }
-
-    //To Language
-    public void swipeRight(){
-        //Create new activity
-        Intent intent = new Intent(this, LanguageCategory.class);
-
-        //Start new activity and finish this one
-        startActivity(intent);
-        finish();
-    }
-
-    //Activates when "Back" button is pressed, takes user to 'Game Mode' screen
-    public void endActivity(View view) {
-        //Play sound
-        buttonSound.start();
-
-        //Ends activity
-        finish();
-    }
-
     //Activates when a category button is pressed, takes user to 'Gameplay' screen
     public void launchGameplay(View view) {
         //Play sound
-        buttonSound.start();
+        AudioPlay.playButtonSFX(sfxOn);
 
         //Get text of the button pressed
         Button btn = (Button)view;
@@ -139,32 +99,77 @@ public class MathCategory extends AppCompatActivity implements GestureDetector.O
         //Pass data to activity
         Intent intent = new Intent(this, Gameplay.class);
         intent.putExtra("category", category);
-        intent.putExtra("difficulty", difficulty);
 
         //Start activity
         startActivity(intent);
         this.finish();
     }
 
-    //Sets the sfx image button and sound volume based on value
-    public void setSound(boolean on){
-        if(on)
-            buttonSound.setVolume(1,1);
-        else
-            buttonSound.setVolume(0,0);
+    //Activates when "Back" button is pressed, takes user to 'Game Mode' screen
+    public void endActivity(View view) {
+        //Play sound
+        AudioPlay.playButtonSFX(sfxOn);
+
+        //Ends activity
+        finish();
     }
 
-    //Sets the music image button and music volume based on value
-    public void setMusic(boolean on){
-        if(on){
-            //Add code here to turn music on
-        }
+    //Detects when user swipes left or right
+    @Override
+    public boolean onFling(MotionEvent downEvent, MotionEvent moveEvent, float velocityX, float velocityY) {
+        boolean result = false;
 
-        else{
-            //Add code here to turn music off
+        float diffY = moveEvent.getY() - downEvent.getY();
+        float diffX = moveEvent.getX() - downEvent.getX();
+
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+            //Detect left or right swipe
+            if (Math.abs(diffX) > 100 && Math.abs(velocityX) > 100) {
+                if (diffX > 0) {
+                    //Swipe right detected
+                    swipeRight();
+                } else {
+                    //Swipe left detected
+                    swipeLeft();
+                }
+                result = true;
+            }
         }
+        return result;
     }
 
+    //To Language
+    public void swipeLeft(){
+        //Pass data to activity
+        Intent intent = new Intent(this, LanguageCategory.class);
+
+        //Start new activity and finish this one
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        finish();
+    }
+
+    //To Normal
+    public void swipeRight(){
+        //Create new activity
+        Intent intent = new Intent(this, NormalCategory.class);
+
+        //Start new activity and finish this one
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        finish();
+    }
+
+    //
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        gestureDetector.onTouchEvent(event);
+        return super.onTouchEvent(event);
+    }
+
+
+
+    //Unused Methods
     @Override
     public boolean onDown(MotionEvent e) {
         return false;
@@ -188,35 +193,6 @@ public class MathCategory extends AppCompatActivity implements GestureDetector.O
     @Override
     public void onLongPress(MotionEvent e) {
 
-    }
-
-    @Override
-    public boolean onFling(MotionEvent downEvent, MotionEvent moveEvent, float velocityX, float velocityY) {
-        boolean result = false;
-        float diffY = moveEvent.getY() - downEvent.getY();
-        float diffX = moveEvent.getX() - downEvent.getX();
-        if (Math.abs(diffX) > Math.abs(diffY)) {
-            //Detect left or right swipe
-            if (Math.abs(diffX) > 100 && Math.abs(velocityX) > 100) {
-                if (diffX > 0) {
-                    //Swipe right detected
-                    swipeRight();
-                } else {
-                    //Swipe left detected
-                    swipeLeft();
-                }
-                result = true;
-
-            }
-
-        }
-        return result;
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        gestureDetector.onTouchEvent(event);
-        return super.onTouchEvent(event);
     }
 
 }

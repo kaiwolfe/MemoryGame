@@ -64,7 +64,6 @@ public class GameMode extends AppCompatActivity {
             intent = new Intent(this, NormalCategory.class);
 
         //Pass data to activity
-
         intent.putExtra("mode", gameMode);
 
         //Start activity
