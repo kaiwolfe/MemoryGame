@@ -66,7 +66,7 @@ public class Gameplay extends AppCompatActivity {
         category = bundle.getString("category");
         gameWon = false;
 
-        int colWidth = 300;
+        int numCols = 3;
 
         //Set sound, music, and texture based on settings.
         getSettings();
@@ -79,7 +79,7 @@ public class Gameplay extends AppCompatActivity {
         setup();
         categories = new Category(texture, R.drawable.card_blank);
         try {
-            generateRound(category, difficulty, colWidth, numOfPairs, true);
+            generateRound(category, difficulty, numCols, numOfPairs, true);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -344,7 +344,7 @@ public class Gameplay extends AppCompatActivity {
             matchedPairs = 0;
             setup();
             setAllMatched(false);
-            generateRound(category, difficulty, 250, numOfPairs, false);
+            generateRound(category, difficulty, 4, numOfPairs, false);
         }
     }
 
