@@ -68,7 +68,6 @@ public class GameMode extends AppCompatActivity {
 
         //Start activity
         startActivity(intent);
-        this.finish();
     }
 
     //Sets the sfx image button and sound volume based on value
