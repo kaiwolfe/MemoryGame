@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.GridView;
@@ -70,6 +71,7 @@ public class Gameplay extends AppCompatActivity {
 
         //Set sound, music, and texture based on settings.
         getSettings();
+        AudioPlay.stopGamePlayAudio();
         AudioPlay.resetGamePlayAudio(this, R.raw.music_gameplay);
         AudioPlay.startGamePlayAudio(sfxOn);
 
@@ -329,7 +331,9 @@ public class Gameplay extends AppCompatActivity {
         calculateScore();
         intent.putExtra("gameWon", gameWon);
         intent.putExtra("score", score);
-
+        round = 1;
+        matchedPairs = 0;
+        setAllMatched(false);
         //Start activity
         startActivity(intent);
         this.finish();
@@ -338,10 +342,12 @@ public class Gameplay extends AppCompatActivity {
     public void nextRound() throws IOException {
         if(round == 3){
             gameWon = true;
+            score += round * (int)timeLeftInMilliseconds/1000;
             endGame();
         }else{
             round++;
             matchedPairs = 0;
+            score += round * (int)timeLeftInMilliseconds /1000;
             setup();
             setAllMatched(false);
             generateRound(category, difficulty, 4, numOfPairs, false);
@@ -362,27 +368,25 @@ public class Gameplay extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        try {
+            countDownTimer.cancel();
+            countDownTimer = null;
 
-        countDownTimer.cancel();
-        countDownTimer = null;
-        Intent intent = new Intent(this, MainActivity.class);
-        //
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-
-        finish();
+        } catch (Exception e) {
+            Log.d("TIMER", e.getMessage());
+        }
+            matchedPairs = 0;
+            setAllMatched(false);
+            round = 1;
+            AudioPlay.stopGamePlayAudio();
+            AudioPlay.createGamePlayAudio(this, R.raw.music_menu);
+            //Clears activity stack, ends activity, starts main menu
+            //THIS NEEDS TESTED
+            Intent intent = new Intent(this, GameMode.class);
+            //Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }
 
     }
-    public void refresh()
-    {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                cardAdapter.notifyDataSetChanged();
-                gridView.invalidateViews();
-            }
-        });
-
-    }
-
-}

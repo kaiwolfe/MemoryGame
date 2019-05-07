@@ -28,11 +28,11 @@ public class MainActivity extends AppCompatActivity {
         //Assigns specific sound files to each media player
 
         //Get music, sfx, and texture settings based on last use. Set's default to true if the first time playing.
-
-
-        AudioPlay.createGamePlayAudio(this, R.raw.music_menu);
         getSettings();
+        if(!AudioPlay.isGameplayPlayingAudio)
+            AudioPlay.createGamePlayAudio(this, R.raw.music_menu);
         AudioPlay.startGamePlayAudio(musicOn);
+
 
         AudioPlay.createButtonSFX(this, R.raw.button);
         AudioPlay.createToggleSFX(this, R.raw.toggle);
@@ -103,13 +103,6 @@ public class MainActivity extends AppCompatActivity {
         texture = settings.getInt("cardTexture", R.drawable.cardback_bluestripes);
         FlipCard.setflipCardSFX(sfxOn);
 
-        //Toggle music/sound based on settings
-        if(!musicOn)
-            AudioPlay.stopGamePlayAudio();
-        else{
-            AudioPlay.resetGamePlayAudio(this, R.raw.music_menu);
-            AudioPlay.startGamePlayAudio(true);
-        }
     }
 
 }

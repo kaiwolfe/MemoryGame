@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,37 +20,28 @@ public class GameMode extends AppCompatActivity {
     boolean musicOn;
     boolean sfxOn;
 
-    //Variable for sound player
-    MediaPlayer buttonSound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_mode);
-
-        //Assign specific sounds to each media player
-        buttonSound = MediaPlayer.create(this, R.raw.button);
-
-        //Set sound/music based on value
-
-
         getSettings();
     }
 
     //Activates when "Back" button is pressed, takes user to 'Main Menu' screen
     public void endActivity(View view){
-        //Play sound
-        buttonSound.start();
-
-        //Ends activity
+        AudioPlay.playButtonSFX(sfxOn);
+        //Clears activity stack, ends activity, starts main menu
+        Intent intent = new Intent(this, MainActivity.class);
+        //Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
         finish();
     }
 
     //Activates when "Normal" "Math" or "Language" buttons are pressed, takes user to appropriate category activity
     public void launchCategory(View view) {
-        //Play sound
-        buttonSound.start();
-
+        AudioPlay.playButtonSFX(sfxOn);
         //Get text of the button pressed
         Button btn = (Button)view;
         gameMode = btn.getText().toString().toLowerCase();
@@ -70,24 +62,6 @@ public class GameMode extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //Sets the sfx image button and sound volume based on value
-    public void setSound(boolean on){
-        if(on)
-            buttonSound.setVolume(1,1);
-        else
-            buttonSound.setVolume(0,0);
-    }
-
-    //Sets the music image button and music volume based on value
-    public void setMusic(boolean on){
-        if(on){
-            //Add code here to turn music on
-        }
-
-        else{
-            //Add code here to turn music off
-        }
-    }
 
     private void getSettings (){
         SharedPreferences settings = getSharedPreferences("Settings", 0);
@@ -97,9 +71,14 @@ public class GameMode extends AppCompatActivity {
         musicOn = settings.getBoolean("musicOn", true);
         sfxOn = settings.getBoolean("sfxOn", true);
         difficulty = settings.getString("difficulty", "medium");
+    }
+    @Override
+    public void onBackPressed() {
 
-        //Toggle music/sound based on settings
-        setMusic(musicOn);
-        setSound(sfxOn);
+        Intent intent = new Intent(this, MainActivity.class);
+
+        startActivity(intent);
+
+        finish();
     }
 }

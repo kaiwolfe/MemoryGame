@@ -122,7 +122,6 @@ public class CardLayoutAdapterWords extends BaseAdapter {
                     if (word1.getWord().equals(word2.getWord())){
                         System.out.println("IT'S A MATCH!");
                         v.postDelayed(s, 500);
-                        flipCard.resetFlipCount();
                     } else {
                         System.out.println("Not a match!");
                         v.postDelayed(r, 1000);

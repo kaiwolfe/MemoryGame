@@ -69,6 +69,8 @@ public class Options extends AppCompatActivity {
     public void endActivity(View view){
         //Play sound
         AudioPlay.playButtonSFX(sfxOn);
+        AudioPlay.resetGamePlayAudio(this, R.raw.music_menu);
+        AudioPlay.startGamePlayAudio(musicOn);
         //Calls method in this class, will pass data to main activity and end this activity
         finish();
     }
@@ -136,9 +138,6 @@ public class Options extends AppCompatActivity {
     public void finish(){
         //Pass information back to Main Activity
         Intent intent = new Intent();
-//        intent.putExtra("music", musicOn);
-//        intent.Extra("sfx", sfxOn);
-////      intent.putExtra("texture", texture);
 
         SharedPreferences settings = getSharedPreferences("Settings", 0);
         SharedPreferences.Editor editor = settings.edit();

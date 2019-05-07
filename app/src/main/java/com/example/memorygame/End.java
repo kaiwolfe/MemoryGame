@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -59,9 +60,10 @@ public class End extends AppCompatActivity {
     public void endActivity(View view) {
         AudioPlay.playButtonSFX(sfxOn);
         AudioPlay.stopGamePlayAudio();
+        AudioPlay.createGamePlayAudio(this, R.raw.music_menu);
         //Clears activity stack, ends activity, starts main menu
         //THIS NEEDS TESTED
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, GameMode.class);
         //Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
@@ -70,9 +72,13 @@ public class End extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, MainActivity.class);
         AudioPlay.stopGamePlayAudio();
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        AudioPlay.createGamePlayAudio(this, R.raw.music_menu);
+        //Clears activity stack, ends activity, starts main menu
+        //THIS NEEDS TESTED
+        Intent intent = new Intent(this, GameMode.class);
+        //Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
     }

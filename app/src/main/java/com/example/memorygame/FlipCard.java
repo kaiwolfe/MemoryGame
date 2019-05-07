@@ -78,9 +78,8 @@ public class FlipCard extends RelativeLayout {
         flipCount++;
         AudioPlay.playFlipUpSFX(sfxOn);
         if (getFlipCount() > 2) return;
-        //if(mSetRightOut.isRunning() || mSetLeftIn.isRunning()) return;
+        if(mSetRightOut.isRunning() || mSetLeftIn.isRunning()) return;
         if (getChildCount() < 2) return;
-        //r.run();
         if (!mIsBackVisible) {
             mSetRightOut.setTarget(cardFront);
             mSetLeftInText.setTarget(cardText);
@@ -102,8 +101,7 @@ public class FlipCard extends RelativeLayout {
 
     public void flipTheCardBack() {
         resetFlipCount();
-        //if(mSetRightOut.isRunning() || mSetLeftIn.isRunning()) return;
-        //s.run();
+        if(mSetRightOut.isRunning() || mSetLeftIn.isRunning()) return;
         AudioPlay.playFlipDownSFX(sfxOn);
         if (!mIsBackVisible) {
             mSetRightOut.setTarget(cardFront);

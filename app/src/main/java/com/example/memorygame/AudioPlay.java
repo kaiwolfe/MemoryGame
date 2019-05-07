@@ -32,6 +32,7 @@ public class AudioPlay {
                     mediaPlayer.start();
                 }
             });
+            isGameplayPlayingAudio = true;
         } else{
             mediaPlayer.release();
             isGameplayPlayingAudio = false;
