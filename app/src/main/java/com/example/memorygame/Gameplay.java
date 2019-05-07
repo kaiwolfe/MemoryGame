@@ -73,7 +73,7 @@ public class Gameplay extends AppCompatActivity {
         getSettings();
         AudioPlay.stopGamePlayAudio();
         AudioPlay.resetGamePlayAudio(this, R.raw.music_gameplay);
-        AudioPlay.startGamePlayAudio(sfxOn);
+        AudioPlay.startGamePlayAudio(musicOn);
 
         //COUNTDOWN TIMER SECTION
         countDownText = (TextView) findViewById(R.id.text_timer);
